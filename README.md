@@ -108,9 +108,10 @@ The project will consist of two parts:
 # REST Interface
 
 | Method | API                    | Descripton                                                             |
-| ------ | ---------------------- | ---------------------------------------------------------------------- |
+| ------ |------------------------|------------------------------------------------------------------------|
 | POST   | /api/auth/signup       | SignUp a new user                                                      |
 | POST   | /api/auth/signin       | Login                                                                  |
+| POST   | /api/auth/logout       | Logout                                                                 |
 | GET    | /api/users/?q=query    | List of all users, filtering using a query                             |
 | GET    | /api/users/:id         | User's details with the given id                                       |
 | GET    | /api/auctions/?q=query | List of all auctions, filtering using a query                          |
