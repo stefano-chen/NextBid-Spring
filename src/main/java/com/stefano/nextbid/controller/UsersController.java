@@ -17,4 +17,9 @@ public class UsersController {
     public ResponseEntity<?> getUserDetailById(@PathVariable Integer id) {
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @PostMapping("/bio")
+    public ResponseEntity<?> updateUserBio() {
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

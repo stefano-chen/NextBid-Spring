@@ -47,6 +47,11 @@ class NextbidApplicationTests {
 	}
 
 	@Test
+	void updateUserBioEndpointShouldExist() throws Exception {
+		this.mockMvc.perform(get("/api/users/bio", 1)).andExpect(status().is(not(404)));
+	}
+
+	@Test
 	void allAuctionsEndpointShouldExist() throws Exception {
 		this.mockMvc.perform(get("/api/auctions?q=query")).andExpect(status().is(not(404)));
 	}

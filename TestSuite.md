@@ -6,6 +6,7 @@ ___
 * HTTP GET /api/auth/logout --> HTTP code != 404
 * HTTP GET /api/users/?q=query --> HTTP code != 404
 * HTTP GET /api/users/:id --> HTTP code != 404
+* HTTP POST /api/users/bio --> HTTP code != 404
 * HTTP GET /api/auctions/?q=query --> HTTP code != 404
 * HTTP POST /api/auctions --> HTTP code != 404
 * HTTP GET /api/auctions/:id --> HTTP code != 404

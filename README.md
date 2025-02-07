@@ -114,6 +114,7 @@ The project will consist of two parts:
 | GET    | /api/auth/logout       | Logout                                                                 |
 | GET    | /api/users/?q=query    | List of all users, filtering using a query                             |
 | GET    | /api/users/:id         | User's details with the given id                                       |
+| POST   | /api/users/bio         | Modify user's bio                                                      |
 | GET    | /api/auctions/?q=query | List of all auctions, filtering using a query                          |
 | POST   | /api/auctions          | Create a new auction (only authenticated users)                        |
 | GET    | /api/auctions/:id      | Auction's details with the given id                                    |
