@@ -1,11 +1,13 @@
 package com.stefano.nextbid.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.Instant;
+import java.util.List;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
@@ -31,6 +33,10 @@ public class Auction {
     @JoinColumn(name = "ownerId", nullable = false)
     @JsonManagedReference
     private User owner;
+
+    @OneToMany(mappedBy = "id", cascade = CascadeType.ALL)
+    @JsonBackReference
+    private List<Bid> bids;
 
     @CreatedDate
     @Column(nullable = false, updatable = false)
@@ -112,5 +118,13 @@ public class Auction {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public List<Bid> getBids() {
+        return bids;
+    }
+
+    public void setBids(List<Bid> bids) {
+        this.bids = bids;
     }
 }
