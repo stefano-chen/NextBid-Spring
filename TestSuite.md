@@ -16,3 +16,9 @@ ___
 * HTTP POST /api/auctions/:id/bids --> HTTP code != 404
 * HTTP GET /api/bids/:id --> HTTP code != 404
 * HTTP GET /api/whoami --> HTTP code != 404
+
+### AuthController Test
+
+* HTTP POST /api/auth/signup with empty body --> HTTP code 400
+* HTTP POST /api/auth/signup with missing data --> HTTP code 400
+* HTTP POST /api/auth/signup with valid data --> HTTP code 200 + JSON{username, name, surname, bio, _id, createdAt}
