@@ -40,6 +40,7 @@ public class AuthController {
 
     @GetMapping("/logout")
     public ResponseEntity<?> logout() {
+        authService.logout();
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

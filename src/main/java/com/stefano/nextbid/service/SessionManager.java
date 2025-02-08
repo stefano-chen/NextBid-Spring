@@ -20,8 +20,8 @@ public class SessionManager {
         session.setAttribute("uid", id);
     }
 
-    public boolean checkAuth() {
-        return session.getAttribute("uid") == null;
+    public boolean isAuthenticated() {
+        return session.getAttribute("uid") != null;
     }
 
     public Integer getUserId() {

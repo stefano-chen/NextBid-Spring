@@ -7,11 +7,8 @@ import com.stefano.nextbid.entity.User;
 import com.stefano.nextbid.exceptions.InvalidCredentialsException;
 import com.stefano.nextbid.exceptions.UsernameAlreadyExistsException;
 import com.stefano.nextbid.repo.UserRepository;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Objects;
 
 @Service
 public class AuthService {
@@ -45,5 +42,9 @@ public class AuthService {
         }
         sessionManager.setUserId(user.getId());
         return userMapper.mapToUserDTO(user);
+    }
+
+    public void logout() {
+        sessionManager.destroy();
     }
 }
