@@ -12,7 +12,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.Instant;
 
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -53,6 +53,7 @@ class AuthControllerTest {
         when(authService.signup(signupBody)).thenReturn(new UserDTO(1,"stefano", "stefano", "stefano", "", Instant.now()));
 
         this.mockMvc.perform(post("/api/auth/signup").content(body).contentType("application/json")).andDo(print()).andExpect(status().isOk());
+        verify(authService, times(1)).signup(signupBody);
     }
 
     @Test
@@ -79,5 +80,6 @@ class AuthControllerTest {
         when(authService.signin(signinBody)).thenReturn(new UserDTO(1,"stefano", "stefano", "stefano", "", Instant.now()));
 
         this.mockMvc.perform(post("/api/auth/signin").content(body).contentType("application/json")).andDo(print()).andExpect(status().isOk());
+        verify(authService, times(1)).signin(signinBody);
     }
 }
