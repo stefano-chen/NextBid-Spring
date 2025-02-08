@@ -2,13 +2,18 @@ package com.stefano.nextbid.controller;
 
 import com.stefano.nextbid.dto.SignupBody;
 import com.stefano.nextbid.dto.UserDTO;
+import com.stefano.nextbid.exceptions.UsernameAlreadyExistsException;
 import com.stefano.nextbid.service.AuthService;
+import com.stefano.nextbid.service.SessionManager;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -25,12 +30,17 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@Valid @RequestBody SignupBody body) {
-        UserDTO user = this.authService.signup(body);
-        return new ResponseEntity<>(user,HttpStatus.OK);
+        try {
+            UserDTO user = this.authService.signup(body);
+            return new ResponseEntity<>(user,HttpStatus.OK);
+        } catch (UsernameAlreadyExistsException e) {
+            return new ResponseEntity<>(Map.of("error",e.getMessage()), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PostMapping("/signin")
     public ResponseEntity<?> signin() {
+
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
