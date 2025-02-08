@@ -1,10 +1,9 @@
 package com.stefano.nextbid.controller;
 
+import com.stefano.nextbid.dto.SigninBody;
 import com.stefano.nextbid.dto.SignupBody;
 import com.stefano.nextbid.dto.UserDTO;
 import com.stefano.nextbid.service.AuthService;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -16,7 +15,6 @@ import java.time.Instant;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.cookie;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(AuthController.class)
@@ -77,6 +75,9 @@ class AuthControllerTest {
                 "}";
 
         SigninBody signinBody = new SigninBody("stefano", "stefano");
-        this.mockMvc.perform(post("/api/auth/signup").content(body).contentType("application/json")).andDo(print()).andExpect(status().isOk());
+
+        when(authService.signin(signinBody)).thenReturn(new UserDTO(1,"stefano", "stefano", "stefano", "", Instant.now()));
+
+        this.mockMvc.perform(post("/api/auth/signin").content(body).contentType("application/json")).andDo(print()).andExpect(status().isOk());
     }
 }
