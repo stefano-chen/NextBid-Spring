@@ -19,6 +19,14 @@ ___
 
 ### AuthController Test
 
-* HTTP POST /api/auth/signup with empty body --> HTTP code 400
+* HTTP POST /api/auth/signup with empty data --> HTTP code 400
 * HTTP POST /api/auth/signup with missing data --> HTTP code 400
-* HTTP POST /api/auth/signup with valid data --> HTTP code 200 + JSON{username, name, surname, bio, _id, createdAt}
+* HTTP POST /api/auth/signup with valid data --> HTTP code 200
+* HTTP POST /api/auth/signup with valid data --> Session Cookie
+
+* HTTP POST /api/auth/signin with empty data --> HTTP code 400
+* HTTP POST /api/auth/signin with missing data --> HTTP code 400
+* HTTP POST /api/auth/signin with valid data --> HTTP code 200
+* HTTP POST /api/auth/signin with valid data --> Session Cookie
+
+
