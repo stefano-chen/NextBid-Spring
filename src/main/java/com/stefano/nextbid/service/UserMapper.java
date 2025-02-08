@@ -1,5 +1,6 @@
 package com.stefano.nextbid.service;
 
+import com.stefano.nextbid.dto.SigninBody;
 import com.stefano.nextbid.dto.SignupBody;
 import com.stefano.nextbid.dto.UserDTO;
 import com.stefano.nextbid.entity.User;
@@ -10,6 +11,7 @@ public class UserMapper {
     public User mapToUser(SignupBody body) {
         return new User(body.username(), body.name(), body.surname(), "", body.password());
     }
+
 
     public UserDTO mapToUserDTO(User user) {
         return new UserDTO(user.getId(), user.getUsername(), user.getName(), user.getSurname(), user.getBio(), user.getCreatedAt());
