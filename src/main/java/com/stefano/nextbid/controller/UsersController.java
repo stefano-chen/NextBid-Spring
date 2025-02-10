@@ -1,6 +1,7 @@
 package com.stefano.nextbid.controller;
 
 import com.stefano.nextbid.dto.UserDTO;
+import com.stefano.nextbid.exceptions.InvalidIdException;
 import com.stefano.nextbid.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -8,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/users")
@@ -28,11 +30,18 @@ public class UsersController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getUserDetailById(@PathVariable Integer id) {
-        return new ResponseEntity<>(HttpStatus.OK);
+        UserDTO user = userService.getUser(id);
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     @PostMapping("/bio")
     public ResponseEntity<?> updateUserBio() {
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+
+    @ExceptionHandler(InvalidIdException.class)
+    public ResponseEntity<?> handleInvalidId(InvalidIdException e) {
+        return new ResponseEntity<>(Map.of("error", e.getMessage()), HttpStatus.BAD_REQUEST);
     }
 }

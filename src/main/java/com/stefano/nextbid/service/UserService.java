@@ -36,7 +36,6 @@ public class UserService {
     public UserDTO getUser(Integer id) throws IllegalArgumentException, InvalidIdException {
         if (id == null)
             throw new IllegalArgumentException();
-
         User user = userRepository.findById(id).orElseThrow(InvalidIdException::new);
         return userMapper.mapToUserDTO(user);
     }
