@@ -9,3 +9,11 @@ GET /api/users/{id}
 GET /api/users/{id}/auctions
 GET /api/users/{id}/auctions/won
 PUT /api/users/bio
+
+POST /api/auctions
+GET /api/auctions?q=query
+GET /api/auctions/{id}
+PUT /api/auctions/{id}
+DELETE /api/auctions/{id}
+GET /api/auctions/{id}/bids
+POST /api/auctions/{id}/bids

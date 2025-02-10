@@ -8,13 +8,13 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/auctions")
 public class AuctionsController {
 
-    @GetMapping("")
-    public ResponseEntity<?> getAllAuctionsFilterByQuery(@RequestParam String q) {
+    @PostMapping("")
+    public ResponseEntity<?> createAuction() {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PostMapping("")
-    public ResponseEntity<?> createAuction() {
+    @GetMapping("")
+    public ResponseEntity<?> getAllAuctionsFilterByQuery(@RequestParam String q) {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
