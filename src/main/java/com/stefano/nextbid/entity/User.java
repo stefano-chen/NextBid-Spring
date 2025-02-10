@@ -30,14 +30,6 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    @OneToMany(mappedBy = "id", cascade = CascadeType.ALL)
-    @JsonBackReference
-    private List<Auction> auctions;
-
-    @OneToMany(mappedBy = "id", cascade = CascadeType.ALL)
-    @JsonBackReference
-    private List<Bid> bids;
-
     @CreatedDate
     @Column(nullable = false, updatable = false)
     private Instant createdAt;
@@ -133,21 +125,5 @@ public class User {
                 ", createdAt=" + createdAt +
                 ", version=" + version +
                 '}';
-    }
-
-    public List<Auction> getAuctions() {
-        return auctions;
-    }
-
-    public void setAuctions(List<Auction> auctions) {
-        this.auctions = auctions;
-    }
-
-    public List<Bid> getBids() {
-        return bids;
-    }
-
-    public void setBids(List<Bid> bids) {
-        this.bids = bids;
     }
 }

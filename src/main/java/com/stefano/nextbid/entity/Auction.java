@@ -34,10 +34,6 @@ public class Auction {
     @JsonManagedReference
     private User owner;
 
-    @OneToMany(mappedBy = "id", cascade = CascadeType.ALL)
-    @JsonBackReference
-    private List<Bid> bids;
-
     @CreatedDate
     @Column(nullable = false, updatable = false)
     private Instant createdAt;
@@ -118,13 +114,5 @@ public class Auction {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public List<Bid> getBids() {
-        return bids;
-    }
-
-    public void setBids(List<Bid> bids) {
-        this.bids = bids;
     }
 }
