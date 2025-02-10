@@ -11,6 +11,7 @@ import java.util.List;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
+@Table(name = "auctions")
 public class Auction {
 
     @Id

@@ -27,7 +27,8 @@ public class UserService {
             throw new IllegalArgumentException();
         }
         if (q.isEmpty()) {
-            return userRepository.findAll().stream().map(userMapper::mapToUserDTO).toList();
+            return userRepository.findAll()
+                    .stream().map(userMapper::mapToUserDTO).toList();
         }
         return userRepository.findAllByUsernameContainingIgnoreCase(q).stream().map(userMapper::mapToUserDTO).toList();
     }
