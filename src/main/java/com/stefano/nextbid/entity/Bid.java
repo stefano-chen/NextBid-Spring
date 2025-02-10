@@ -17,12 +17,10 @@ public class Bid {
 
     @ManyToOne
     @JoinColumn(name = "userId", nullable = false)
-    @JsonManagedReference
     private User user;
 
     @ManyToOne
     @JoinColumn(name = "auctionId", nullable = false)
-    @JsonManagedReference
     private Auction auction;
 
     @Column(nullable = false)

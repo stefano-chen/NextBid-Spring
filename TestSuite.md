@@ -35,4 +35,17 @@ ___
 * HTTP GET /api/whoami with unauthenticated user --> HTTP code 400
 
 
+### UsersController Test
+
+* HTTP GET /api/users when there are no users --> []
+* HTTP GET /api/users when there are users --> List of all users
+* HTTP GET /api/users?q=mario when there are no users with matching query --> []
+* HTTP GET /api/users?q=mario when there are users with matching query --> List of users that match the query
+
+* HTTP GET /api/users/:id with valid id --> full detail
+* HTTP GET /api/users/:id with invalid id --> "Invalid ID. Please check the ID and try again"
+
+
+
+
 

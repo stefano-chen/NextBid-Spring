@@ -31,8 +31,11 @@ public class Auction {
 
     @ManyToOne
     @JoinColumn(name = "ownerId", nullable = false)
-    @JsonManagedReference
     private User owner;
+
+    @OneToOne
+    @JoinColumn(name = "winnerId", nullable = false)
+    private User winner;
 
     @CreatedDate
     @Column(nullable = false, updatable = false)
@@ -44,12 +47,13 @@ public class Auction {
     public Auction() {
     }
 
-    public Auction(String title, String description, Instant dueDate, Double initialBid, User owner) {
+    public Auction(String title, String description, Instant dueDate, Double initialBid, User owner, User winner) {
         this.title = title;
         this.description = description;
         this.dueDate = dueDate;
         this.initialBid = initialBid;
         this.owner = owner;
+        this.winner = winner;
     }
 
     public Integer getVersion() {
@@ -114,5 +118,13 @@ public class Auction {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public User getWinner() {
+        return winner;
+    }
+
+    public void setWinner(User winner) {
+        this.winner = winner;
     }
 }
