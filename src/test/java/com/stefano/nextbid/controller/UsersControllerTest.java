@@ -1,6 +1,7 @@
 package com.stefano.nextbid.controller;
 
 import com.stefano.nextbid.dto.UserDTO;
+import com.stefano.nextbid.entity.Auction;
 import com.stefano.nextbid.entity.User;
 import com.stefano.nextbid.exceptions.InvalidIdException;
 import com.stefano.nextbid.service.UserService;
@@ -83,5 +84,24 @@ class UsersControllerTest {
     @Test
     void updateBioWithInvalidBodyShouldSuccess() throws Exception {
         this.mockMvc.perform(put("/api/users/bio")).andDo(print()).andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void getUserAuctionsWithValidIdShouldReturnListOfAuctions() throws Exception {
+        User user = new User();
+        user.setId(1);
+        List<Auction> auctions = List.of(new Auction("auction1", "auction", Instant.now(), 10.0, user, null),
+                new Auction("auction2", "auction", Instant.now(), 10.0, user, null));
+        when(userService.getUserAuctions(1)).thenReturn(auctions);
+        this.mockMvc.perform(get("/api/users/1/auctions")).andDo(print()).andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].owner.id").value(1))
+                .andExpect(jsonPath("$[1].owner.id").value(1));
+    }
+
+    @Test
+    void getUserAuctionsWithInvalidIdShouldReturnEmptyList() throws Exception {
+        when(userService.getUserAuctions(90000)).thenReturn(List.of());
+        assertTrue(this.mockMvc.perform(get("/api/users/90000/auctions")).andDo(print()).andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString().equals("[]"));
     }
 }
