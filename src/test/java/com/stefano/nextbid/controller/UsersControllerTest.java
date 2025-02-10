@@ -104,4 +104,25 @@ class UsersControllerTest {
         assertTrue(this.mockMvc.perform(get("/api/users/90000/auctions")).andDo(print()).andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString().equals("[]"));
     }
+
+    @Test
+    void getUserWonAuctionsWithValidIdShouldReturnListOfAuctions() throws Exception {
+        User owner = new User();
+        owner.setId(100);
+        User user = new User();
+        user.setId(1);
+        List<Auction> auctions = List.of(new Auction("auction1", "auction", Instant.now(), 10.0, owner, user),
+                new Auction("auction2", "auction", Instant.now(), 10.0, owner, user));
+        when(userService.getUserWonAuctions(1)).thenReturn(auctions);
+        this.mockMvc.perform(get("/api/users/1/auctions/won")).andDo(print()).andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].winner.id").value(1))
+                .andExpect(jsonPath("$[1].winner.id").value(1));
+    }
+
+    @Test
+    void getUserWonAuctionsWithInvalidIdShouldReturnEmptyList() throws Exception {
+        when(userService.getUserWonAuctions(90000)).thenReturn(List.of());
+        assertTrue(this.mockMvc.perform(get("/api/users/90000/auctions/won")).andDo(print()).andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString().equals("[]"));
+    }
 }

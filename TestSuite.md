@@ -31,7 +31,12 @@ ___
 * HTTP PUT /api/users/bio with invalid bio --> HTTP code 400
 
 * HTTP GET /api/users/:id/auctions with valid id --> List of all auction owned by the user identified by the provided id
-* HTTP GET /api/users/:id/auctions with invalid id --> HTTP code 400
+* HTTP GET /api/users/:id/auctions with invalid id --> []
+
+* HTTP GET /api/users/:id/auctions/won with valid id --> List of all auction won by the user identified by the provided id
+* HTTP GET /api/users/:id/auctions/won with invalid id --> []
+
+
 
 
 
