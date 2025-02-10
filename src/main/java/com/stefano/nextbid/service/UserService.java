@@ -1,9 +1,11 @@
 package com.stefano.nextbid.service;
 
 import com.stefano.nextbid.dto.UserDTO;
+import com.stefano.nextbid.entity.Auction;
 import com.stefano.nextbid.entity.User;
 import com.stefano.nextbid.exceptions.InvalidIdException;
 import com.stefano.nextbid.exceptions.NotAuthenticatedException;
+import com.stefano.nextbid.repo.AuctionRepository;
 import com.stefano.nextbid.repo.UserRepository;
 import org.aspectj.weaver.ast.Not;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,13 +18,16 @@ public class UserService {
 
     private final UserRepository userRepository;
 
+    private final AuctionRepository auctionRepository;
+
     private final UserMapper userMapper;
 
     private final SessionManager sessionManager;
 
     @Autowired
-    public UserService(UserRepository userRepository, UserMapper userMapper, SessionManager sessionManager) {
+    public UserService(UserRepository userRepository, AuctionRepository auctionRepository, UserMapper userMapper, SessionManager sessionManager) {
         this.userRepository = userRepository;
+        this.auctionRepository = auctionRepository;
         this.userMapper = userMapper;
         this.sessionManager = sessionManager;
     }
@@ -54,5 +59,14 @@ public class UserService {
         User user = userRepository.findById(userId).orElseThrow(InvalidIdException::new);
         user.setBio(bio);
         userRepository.save(user);
+    }
+
+    public List<Auction> getUserAuctions(Integer id) {
+        if (id == null)
+            throw new IllegalArgumentException();
+
+        User user = new User();
+        user.setId(id);
+        return auctionRepository.findAllByOwner(user);
     }
 }

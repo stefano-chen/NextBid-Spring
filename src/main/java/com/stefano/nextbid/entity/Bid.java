@@ -32,7 +32,7 @@ public class Bid {
     private Instant createdAt;
 
     @Version
-    private Integer version;
+    private int version;
 
     public Bid() {
     }

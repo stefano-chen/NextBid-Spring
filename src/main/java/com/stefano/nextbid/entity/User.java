@@ -1,6 +1,7 @@
 package com.stefano.nextbid.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -29,6 +30,7 @@ public class User {
     private String bio;
 
     @Column(nullable = false)
+    @JsonIgnore
     private String password;
 
     @CreatedDate
@@ -36,7 +38,7 @@ public class User {
     private Instant createdAt;
 
     @Version
-    private Integer version;
+    private int version;
 
 
     public User() {

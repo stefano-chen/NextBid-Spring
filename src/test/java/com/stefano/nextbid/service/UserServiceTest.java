@@ -1,14 +1,17 @@
 package com.stefano.nextbid.service;
 
 import com.stefano.nextbid.dto.UserDTO;
+import com.stefano.nextbid.entity.Auction;
 import com.stefano.nextbid.entity.User;
 import com.stefano.nextbid.exceptions.InvalidIdException;
 import com.stefano.nextbid.exceptions.NotAuthenticatedException;
+import com.stefano.nextbid.repo.AuctionRepository;
 import com.stefano.nextbid.repo.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -20,11 +23,13 @@ class UserServiceTest {
 
     private UserRepository userRepository = mock(UserRepository.class);
 
+    private AuctionRepository auctionRepository = mock(AuctionRepository.class);
+
     private UserMapper userMapper = mock(UserMapper.class);
 
     private SessionManager sessionManager = mock(SessionManager.class);
 
-    private UserService userService = new UserService(userRepository, userMapper, sessionManager);
+    private UserService userService = new UserService(userRepository, auctionRepository, userMapper, sessionManager);
 
     @Test
     void getAllUsersWithNullArgShouldThrow() {
@@ -74,4 +79,21 @@ class UserServiceTest {
         assertThrows(IllegalArgumentException.class, () -> {userService.updateBio(null);});
     }
 
+    @Test
+    void getUserAuctionWithValidIdShouldReturnList() {
+        Integer id = 1;
+        User user = new User();
+        user.setId(1);
+
+        when(auctionRepository.findAllByOwner(any())).thenReturn(List.of(new Auction("auction", "auction", Instant.now(), 10.0, user, null)));
+
+        List<Auction> auctionList = userService.getUserAuctions(1);
+
+        assertEquals(user, auctionList.get(0).getOwner());
+    }
+
+    @Test
+    void getUserAuctionWithNullArgShouldThrow() {
+        assertThrows(IllegalArgumentException.class, () -> userService.getUserAuctions(null));
+    }
 }
