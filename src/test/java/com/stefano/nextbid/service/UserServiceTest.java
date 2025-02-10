@@ -73,4 +73,5 @@ class UserServiceTest {
     void updateBioWithNullArgShouldThrow() {
         assertThrows(IllegalArgumentException.class, () -> {userService.updateBio(null);});
     }
+
 }

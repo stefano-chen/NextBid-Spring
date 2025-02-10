@@ -27,8 +27,11 @@ ___
 * HTTP GET /api/users/:id with valid id --> full detail
 * HTTP GET /api/users/:id with invalid id --> "Invalid ID. Please check the ID and try again"
 
-* HTTP POST /api/users/bio with valid bio --> HTTP code 200
-* HTTP POST /api/users/bio with invalid bio --> HTTP code 400
+* HTTP PUT /api/users/bio with valid bio --> HTTP code 200
+* HTTP PUT /api/users/bio with invalid bio --> HTTP code 400
+
+* HTTP GET /api/users/:id/auctions with valid id --> List of all auction owned by the user identified by the provided id
+* HTTP GET /api/users/:id/auctions with invalid id --> HTTP code 400
 
 
 
