@@ -3,7 +3,9 @@ package com.stefano.nextbid.service;
 import com.stefano.nextbid.dto.UserDTO;
 import com.stefano.nextbid.entity.User;
 import com.stefano.nextbid.exceptions.InvalidIdException;
+import com.stefano.nextbid.exceptions.NotAuthenticatedException;
 import com.stefano.nextbid.repo.UserRepository;
+import org.aspectj.weaver.ast.Not;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,10 +18,13 @@ public class UserService {
 
     private final UserMapper userMapper;
 
+    private final SessionManager sessionManager;
+
     @Autowired
-    public UserService(UserRepository userRepository, UserMapper userMapper) {
+    public UserService(UserRepository userRepository, UserMapper userMapper, SessionManager sessionManager) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
+        this.sessionManager = sessionManager;
     }
 
     public List<UserDTO> getAllUsers(String q) throws IllegalArgumentException {
@@ -38,5 +43,16 @@ public class UserService {
             throw new IllegalArgumentException();
         User user = userRepository.findById(id).orElseThrow(InvalidIdException::new);
         return userMapper.mapToUserDTO(user);
+    }
+
+    public void updateBio(String bio) throws NotAuthenticatedException, IllegalArgumentException, InvalidIdException{
+        if (bio == null)
+            throw new IllegalArgumentException();
+        if (!sessionManager.isAuthenticated())
+            throw new NotAuthenticatedException();
+        Integer userId = sessionManager.getUserId();
+        User user = userRepository.findById(userId).orElseThrow(InvalidIdException::new);
+        user.setBio(bio);
+        userRepository.save(user);
     }
 }

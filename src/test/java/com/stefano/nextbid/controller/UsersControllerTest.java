@@ -17,7 +17,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -73,5 +73,15 @@ class UsersControllerTest {
         when(userService.getUser(1)).thenReturn(new UserDTO(1,"stefanoss", "stefano", "chen", "bio", Instant.now()));
         this.mockMvc.perform(get("/api/users/1")).andDo(print()).andExpect(status().isOk())
                 .andExpect(jsonPath("$.username").value("stefanoss"));
+    }
+
+    @Test
+    void updateBioWithValidBodyShouldSuccess() throws Exception {
+        this.mockMvc.perform(put("/api/users/bio").content("ciao").contentType("application/json")).andDo(print()).andExpect(status().isOk());
+    }
+
+    @Test
+    void updateBioWithInvalidBodyShouldSuccess() throws Exception {
+        this.mockMvc.perform(put("/api/users/bio")).andDo(print()).andExpect(status().isBadRequest());
     }
 }

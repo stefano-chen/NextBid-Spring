@@ -8,4 +8,4 @@ GET /api/users?q=query
 GET /api/users/{id}
 GET /api/users/{id}/auctions
 GET /api/users/{id}/auctions/won
-POST /api/users/bio
+PUT /api/users/bio
