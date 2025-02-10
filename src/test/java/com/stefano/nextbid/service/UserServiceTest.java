@@ -96,4 +96,23 @@ class UserServiceTest {
     void getUserAuctionWithNullArgShouldThrow() {
         assertThrows(IllegalArgumentException.class, () -> userService.getUserAuctions(null));
     }
+
+
+    @Test
+    void getUserWonAuctionWithValidIdShouldReturnList() {
+        Integer id = 1;
+        User user = new User();
+        user.setId(1);
+
+        when(auctionRepository.findAllByWinner(any())).thenReturn(List.of(new Auction("auction", "auction", Instant.now(), 10.0, user, null)));
+
+        List<Auction> auctionList = userService.getUserWonAuctions(1);
+
+        assertEquals(user, auctionList.get(0).getOwner());
+    }
+
+    @Test
+    void getUserWonAuctionWithNullArgShouldThrow() {
+        assertThrows(IllegalArgumentException.class, () -> userService.getUserWonAuctions(null));
+    }
 }
