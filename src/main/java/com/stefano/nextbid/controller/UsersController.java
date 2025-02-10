@@ -44,7 +44,8 @@ public class UsersController {
 
     @GetMapping("/{id}/auctions/won")
     public ResponseEntity<?> getUserWonAuctions(@PathVariable Integer id) {
-        return new ResponseEntity<>(HttpStatus.OK);
+        List<Auction> auctionList = userService.getUserWonAuctions(id);
+        return new ResponseEntity<>(auctionList, HttpStatus.OK);
     }
 
     @PutMapping("/bio")

@@ -69,4 +69,13 @@ public class UserService {
         user.setId(id);
         return auctionRepository.findAllByOwner(user);
     }
+
+    public List<Auction> getUserWonAuctions(Integer id) {
+        if (id == null)
+            throw new IllegalArgumentException();
+
+        User user = new User();
+        user.setId(id);
+        return auctionRepository.findAllByWinner(user);
+    }
 }
