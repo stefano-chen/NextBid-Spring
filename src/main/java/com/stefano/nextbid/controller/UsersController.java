@@ -50,8 +50,8 @@ public class UsersController {
     }
 
 
-    @ExceptionHandler(InvalidIdException.class)
-    public ResponseEntity<?> handleInvalidId(InvalidIdException e) {
+    @ExceptionHandler({InvalidIdException.class, IllegalArgumentException.class})
+    public ResponseEntity<?> handleInvalidId(Exception e) {
         return new ResponseEntity<>(Map.of("error", e.getMessage()), HttpStatus.BAD_REQUEST);
     }
 }

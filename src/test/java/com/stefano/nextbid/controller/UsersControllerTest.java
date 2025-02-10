@@ -2,6 +2,7 @@ package com.stefano.nextbid.controller;
 
 import com.stefano.nextbid.dto.UserDTO;
 import com.stefano.nextbid.entity.User;
+import com.stefano.nextbid.exceptions.InvalidIdException;
 import com.stefano.nextbid.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -57,5 +59,19 @@ class UsersControllerTest {
         when(userService.getAllUsers("")).thenReturn(List.of(new UserDTO(2, "mario", "mario", "bros", "mario", Instant.now())));
         this.mockMvc.perform(get("/api/users")).andDo(print()).andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].username").value("mario"));
+    }
+
+
+    @Test
+    void getUserByIdWithInvalidIdShouldReturnCode400() throws Exception {
+        when(userService.getUser(any())).thenThrow(InvalidIdException.class);
+        this.mockMvc.perform(get("/api/users/ciao")).andDo(print()).andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void getUserByIdWithValidIdShouldReturnUserDetails() throws Exception {
+        when(userService.getUser(1)).thenReturn(new UserDTO(1,"stefanoss", "stefano", "chen", "bio", Instant.now()));
+        this.mockMvc.perform(get("/api/users/1")).andDo(print()).andExpect(status().isOk())
+                .andExpect(jsonPath("$.username").value("stefanoss"));
     }
 }
