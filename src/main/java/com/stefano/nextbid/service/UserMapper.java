@@ -1,6 +1,5 @@
 package com.stefano.nextbid.service;
 
-import com.stefano.nextbid.dto.SigninBody;
 import com.stefano.nextbid.dto.SignupBody;
 import com.stefano.nextbid.dto.UserDTO;
 import com.stefano.nextbid.entity.User;

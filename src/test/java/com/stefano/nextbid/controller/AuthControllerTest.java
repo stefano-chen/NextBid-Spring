@@ -15,6 +15,7 @@ import java.time.Instant;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(AuthController.class)
@@ -50,9 +51,13 @@ class AuthControllerTest {
 
         SignupBody signupBody = new SignupBody("stefano", "stefano", "stefano", "stefano");
 
-        when(authService.signup(signupBody)).thenReturn(new UserDTO(1,"stefano", "stefano", "stefano", "", Instant.now()));
+        when(authService.signup(signupBody)).thenReturn(new UserDTO(1, "stefano", "stefano", "stefano", "", Instant.now()));
 
-        this.mockMvc.perform(post("/api/auth/signup").content(body).contentType("application/json")).andDo(print()).andExpect(status().isOk());
+        this.mockMvc.perform(post("/api/auth/signup").content(body).contentType("application/json")).andDo(print()).andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value("stefano"))
+                .andExpect(jsonPath("$.surname").value("stefano"))
+                .andExpect(jsonPath("$.username").value("stefano"))
+                .andExpect(jsonPath("$.password").doesNotExist());
         verify(authService, times(1)).signup(signupBody);
     }
 
@@ -77,9 +82,14 @@ class AuthControllerTest {
 
         SigninBody signinBody = new SigninBody("stefano", "stefano");
 
-        when(authService.signin(signinBody)).thenReturn(new UserDTO(1,"stefano", "stefano", "stefano", "", Instant.now()));
+        when(authService.signin(signinBody)).thenReturn(new UserDTO(1, "stefano", "stefano", "stefano", "", Instant.now()));
 
-        this.mockMvc.perform(post("/api/auth/signin").content(body).contentType("application/json")).andDo(print()).andExpect(status().isOk());
+        this.mockMvc.perform(post("/api/auth/signin").content(body).contentType("application/json")).andDo(print()).andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value("stefano"))
+                .andExpect(jsonPath("$.surname").value("stefano"))
+                .andExpect(jsonPath("$.username").value("stefano"))
+                .andExpect(jsonPath("$.password").doesNotExist());
+        ;
         verify(authService, times(1)).signin(signinBody);
     }
 }

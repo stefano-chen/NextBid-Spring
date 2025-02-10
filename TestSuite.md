@@ -17,11 +17,6 @@ ___
 * HTTP GET /api/bids/:id --> HTTP code != 404
 * HTTP GET /api/whoami --> HTTP code != 404
 
-### Integration Test
-* HTTP POST /api/auth/signup with valid data --> Session Cookie
-* HTTP POST /api/auth/signin with valid data --> Session Cookie
-
-
 
 ### AuthController Test
 

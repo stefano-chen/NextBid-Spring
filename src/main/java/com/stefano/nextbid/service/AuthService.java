@@ -35,7 +35,9 @@ public class AuthService {
 
     public UserDTO signup(SignupBody body) throws UsernameAlreadyExistsException {
         User user = userMapper.mapToUser(body);
-        userRepository.findUserByUsername(user.getUsername()).ifPresent(value -> {throw new UsernameAlreadyExistsException();});
+        userRepository.findUserByUsername(user.getUsername()).ifPresent(value -> {
+            throw new UsernameAlreadyExistsException();
+        });
         Hash hash = Password.hash(user.getPassword()).with(bcryptFunction);
         user.setPassword(hash.getResult());
         User savedUser = userRepository.save(user);

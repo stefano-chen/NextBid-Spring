@@ -10,19 +10,13 @@ import com.stefano.nextbid.entity.User;
 import com.stefano.nextbid.exceptions.InvalidCredentialsException;
 import com.stefano.nextbid.exceptions.UsernameAlreadyExistsException;
 import com.stefano.nextbid.repo.UserRepository;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.mockito.exceptions.base.MockitoException;
-import org.mockito.internal.configuration.MockAnnotationProcessor;
 
-import java.sql.SQLException;
 import java.time.Instant;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -77,7 +71,7 @@ class AuthServiceTest {
         when(userRepository.save(user)).thenReturn(user);
         when(userMapper.mapToUserDTO(user)).thenReturn(userDTO);
 
-        assertThrows(UsernameAlreadyExistsException.class, () -> authService.signup(body)) ;
+        assertThrows(UsernameAlreadyExistsException.class, () -> authService.signup(body));
     }
 
     @Test
@@ -90,7 +84,7 @@ class AuthServiceTest {
     void signinWithValidBodyShouldReturnUserDTO() {
         SigninBody body = new SigninBody("stefanoss", "hello");
         User user = new User("stefanoss", "stefano", "chen", "bio", Password.hash("hello").with(bcryptFunction).getResult());
-        UserDTO mappedUser = new UserDTO(1,"stefanoss", "stefano", "chen", "bio", Instant.now());
+        UserDTO mappedUser = new UserDTO(1, "stefanoss", "stefano", "chen", "bio", Instant.now());
         when(userRepository.findUserByUsername(body.username())).thenReturn(Optional.of(user));
         when(userMapper.mapToUserDTO(user)).thenReturn(mappedUser);
 
@@ -116,7 +110,7 @@ class AuthServiceTest {
     void signinWithInvalidPasswordShouldThrow() {
         SigninBody body = new SigninBody("stefanoss", "hello");
         User user = new User("stefanoss", "stefano", "chen", "bio", Password.hash("password").with(bcryptFunction).getResult());
-        UserDTO mappedUser = new UserDTO(1,"stefanoss", "stefano", "chen", "bio", Instant.now());
+        UserDTO mappedUser = new UserDTO(1, "stefanoss", "stefano", "chen", "bio", Instant.now());
         when(userRepository.findUserByUsername(body.username())).thenReturn(Optional.of(user));
         when(userMapper.mapToUserDTO(user)).thenReturn(mappedUser);
         assertThrows(InvalidCredentialsException.class, () -> authService.signin(body));
