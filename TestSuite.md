@@ -37,6 +37,12 @@ ___
 * HTTP GET /api/users/:id/auctions/won with invalid id --> []
 
 
+### AuctionsController Test
+
+* HTTP POST /api/auctions with empty data --> HTTP code 400
+* HTTP POST /api/auctions with missing data --> HTTP code 400
+* HTTP POST /api/auctions with valid data --> HTTP code 200
+
 
 
 

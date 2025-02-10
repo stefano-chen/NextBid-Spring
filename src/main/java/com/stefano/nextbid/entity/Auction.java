@@ -1,13 +1,10 @@
 package com.stefano.nextbid.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.Instant;
-import java.util.List;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
@@ -16,7 +13,7 @@ public class Auction {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Integer _id;
 
     @Column(nullable = false)
     private String title;
@@ -113,12 +110,12 @@ public class Auction {
         this.title = title;
     }
 
-    public Integer getId() {
-        return id;
+    public Integer get_id() {
+        return _id;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void set_id(Integer id) {
+        this._id = id;
     }
 
     public User getWinner() {

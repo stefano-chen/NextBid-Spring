@@ -1,6 +1,5 @@
 package com.stefano.nextbid.entity;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -14,7 +13,7 @@ public class Bid {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Integer _id;
 
     @ManyToOne
     @JoinColumn(name = "userId", nullable = false)
@@ -43,12 +42,12 @@ public class Bid {
         this.amount = amount;
     }
 
-    public Integer getId() {
-        return id;
+    public Integer get_id() {
+        return _id;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void set_id(Integer id) {
+        this._id = id;
     }
 
     public User getUser() {
