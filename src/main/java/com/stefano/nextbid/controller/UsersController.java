@@ -34,6 +34,16 @@ public class UsersController {
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
+    @GetMapping("/{id}/auctions")
+    public ResponseEntity<?> getUserAuctions(@PathVariable Integer id) {
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}/auctions/won")
+    public ResponseEntity<?> getUserWonAuctions(@PathVariable Integer id) {
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
     @PostMapping("/bio")
     public ResponseEntity<?> updateUserBio() {
         return new ResponseEntity<>(HttpStatus.OK);
