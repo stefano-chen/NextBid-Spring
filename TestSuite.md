@@ -29,3 +29,10 @@ ___
 * HTTP POST /api/auth/signin with valid data --> HTTP code 200
 
 
+### UtilsController Test
+
+* HTTP GET /api/whoami with authenticated user --> HTTP code 200
+* HTTP GET /api/whoami with unauthenticated user --> HTTP code 400
+
+
+
