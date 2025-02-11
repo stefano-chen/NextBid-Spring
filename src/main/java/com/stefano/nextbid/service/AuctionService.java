@@ -1,0 +1,38 @@
+package com.stefano.nextbid.service;
+
+import com.stefano.nextbid.dto.AuctionDTO;
+import com.stefano.nextbid.dto.CreateAuctionBody;
+import com.stefano.nextbid.entity.Auction;
+import com.stefano.nextbid.entity.User;
+import com.stefano.nextbid.exceptions.NotAuthenticatedException;
+import com.stefano.nextbid.repo.AuctionRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service
+public class AuctionService {
+
+    private final AuctionMapper auctionMapper;
+
+    private final AuctionRepository auctionRepository;
+
+    private final SessionManager sessionManager;
+
+    @Autowired
+    public AuctionService(AuctionMapper auctionMapper, AuctionRepository auctionRepository, SessionManager sessionManager) {
+        this.auctionMapper = auctionMapper;
+        this.auctionRepository = auctionRepository;
+        this.sessionManager = sessionManager;
+    }
+
+    public AuctionDTO createAuction(CreateAuctionBody body) throws IllegalArgumentException, NotAuthenticatedException{
+        if (body == null)
+            throw new IllegalArgumentException();
+        if (!sessionManager.isAuthenticated())
+            throw new NotAuthenticatedException();
+        User owner = new User(sessionManager.getUserId());
+        Auction auction = auctionMapper.mapToAuction(body, owner);
+        Auction savedAuction = auctionRepository.save(auction);
+        return auctionMapper.mapToAuctionDTO(savedAuction);
+    }
+}

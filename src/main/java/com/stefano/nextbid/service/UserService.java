@@ -65,8 +65,7 @@ public class UserService {
         if (id == null)
             throw new IllegalArgumentException();
 
-        User user = new User();
-        user.setId(id);
+        User user = new User(id);
         return auctionRepository.findAllByOwner(user);
     }
 
@@ -74,8 +73,7 @@ public class UserService {
         if (id == null)
             throw new IllegalArgumentException();
 
-        User user = new User();
-        user.setId(id);
+        User user = new User(id);
         return auctionRepository.findAllByWinner(user);
     }
 }

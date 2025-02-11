@@ -1,5 +1,11 @@
 package com.stefano.nextbid.controller;
 
+import com.stefano.nextbid.dto.AuctionDTO;
+import com.stefano.nextbid.dto.CreateAuctionBody;
+import com.stefano.nextbid.entity.User;
+import com.stefano.nextbid.exceptions.InvalidAuctionDataException;
+import com.stefano.nextbid.service.AuctionMapper;
+import com.stefano.nextbid.service.AuctionService;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,35 +33,32 @@ class AuctionsControllerTest {
     @MockitoBean
     private AuctionService auctionService;
 
-    @Disabled
+
     @Test
     void createAuctionWithEmptyDataShouldFail() throws Exception {
         String body = "{}";
-        CreateAuctionBody auctionBody = new CreateAuctionBody("", "", 0.0, null);
-        when(auctionService.createAuction(auctionBody)).thenThrow(InvalidAuctionException.class);
         this.mockMvc.perform(post("/api/auctions").content(body).contentType("application/json")).andDo(print()).andExpect(status().isBadRequest());
     }
 
-    @Disabled
+
     @Test
-    void createAuctionWithMissingDataShouldFail() {
+    void createAuctionWithMissingDataShouldFail() throws Exception {
         String body = "{\"title\":\"auction\"}";
-        CreateAuctionBody auctionBody = new CreateAuctionBody("auction", "", 0.0, null);
-        when(auctionService.createAuction(any())).thenThrow(InvalidAuctionException.class);
         this.mockMvc.perform(post("/api/auctions").content(body).contentType("application/json")).andDo(print()).andExpect(status().isBadRequest());
     }
 
-    @Disabled
+
     @Test
-    void createAuctionWithValidDataShouldSuccess() {
+    void createAuctionWithValidDataShouldSuccess() throws Exception {
         String body = "{" +
                 "\"title\":\"auction\"," +
                 "\"description\":\"description\"," +
                 "\"initialBid\": 10.0," +
-                "\"dueDate\":\"2026-07-20T13:05:30\"," +
+                "\"dueDate\":\"3026-07-20T13:05:30.00Z\"" +
                 "}";
-        CreateAuctionBody auctionBody = new CreateAuctionBody("auction", "description", 10.0, Instant.parse("2026-07-20T13:05:30"));
-        when(auctionService.createAuction(auctionBody)).thenReturn(auctionBody);
+        CreateAuctionBody auctionBody = new CreateAuctionBody("auction", "description", 10.0, Instant.parse("3026-07-20T13:05:30.00Z"));
+        AuctionDTO createdAuction = new AuctionDTO(1,"auction", "description", 10.0,  Instant.parse("3026-07-20T13:05:30.00Z"), Instant.now(), new User(1), null);
+        when(auctionService.createAuction(auctionBody)).thenReturn(createdAuction);
         this.mockMvc.perform(post("/api/auctions").content(body).contentType("application/json")).andDo(print()).andExpect(status().isOk());
     }
 }

@@ -88,8 +88,7 @@ class UsersControllerTest {
 
     @Test
     void getUserAuctionsWithValidIdShouldReturnListOfAuctions() throws Exception {
-        User user = new User();
-        user.setId(1);
+        User user = new User(1);
         List<Auction> auctions = List.of(new Auction("auction1", "auction", Instant.now(), 10.0, user, null),
                 new Auction("auction2", "auction", Instant.now(), 10.0, user, null));
         when(userService.getUserAuctions(1)).thenReturn(auctions);
@@ -107,10 +106,8 @@ class UsersControllerTest {
 
     @Test
     void getUserWonAuctionsWithValidIdShouldReturnListOfAuctions() throws Exception {
-        User owner = new User();
-        owner.setId(100);
-        User user = new User();
-        user.setId(1);
+        User owner = new User(100);
+        User user = new User(1);
         List<Auction> auctions = List.of(new Auction("auction1", "auction", Instant.now(), 10.0, owner, user),
                 new Auction("auction2", "auction", Instant.now(), 10.0, owner, user));
         when(userService.getUserWonAuctions(1)).thenReturn(auctions);
