@@ -140,4 +140,34 @@ class AuctionServiceTest {
 
         assertThrows(InvalidIdException.class, () -> auctionService.getAuctionById(id));
     }
+
+    @Test
+    void updateAuctionByIdWithValidIdShouldSuccess() {
+        Integer id = 1;
+
+        UpdateAuctionBody body = new UpdateAuctionBody("new title", "new desc");
+
+        Auction auction = new Auction("title", "desc", Instant.now().plus(1, ChronoUnit.DAYS),10.0, new User(100),null);
+
+        when(sessionManager.isAuthenticated()).thenReturn(true);
+        when(sessionManager.getUserId()).thenReturn(100);
+        when(auctionRepository.findById(id)).thenReturn(Optional.of(auction));
+
+        assertDoesNotThrow(() -> auctionService.updateAuctionById(body));
+    }
+
+    @Test
+    void updateAuctionByIdWithInvalidIdShouldThrow() {
+        Integer id = 190909;
+
+        UpdateAuctionBody body = new UpdateAuctionBody("new title", "new desc");
+
+        Auction auction = new Auction("title", "desc", Instant.now().plus(1, ChronoUnit.DAYS),10.0, new User(100),null);
+
+        when(sessionManager.isAuthenticated()).thenReturn(true);
+        when(sessionManager.getUserId()).thenReturn(100);
+        when(auctionRepository.findById(id)).thenReturn(Optional.empty());
+
+        assertThrows(InvalidIdException.class, () -> auctionService.updateAuctionById(body));
+    }
 }

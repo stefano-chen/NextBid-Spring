@@ -19,8 +19,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -123,5 +122,23 @@ class AuctionsControllerTest {
         when(auctionService.getAuctionById(any())).thenThrow(InvalidIdException.class);
 
         this.mockMvc.perform(get("/api/auctions/1029")).andDo(print()).andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void updateAuctionByIdWithValidIdShouldSuccess() throws Exception {
+        String body = "{" +
+                "\"title\":\"new title\"," +
+                "\"description\":\"new desc\"" +
+                "}";
+        this.mockMvc.perform(put("/api/auctions/1").content(body).contentType("application/json")).andDo(print()).andExpect(status().isOk());
+    }
+
+    @Test
+    void updateAuctionByIdWithInvalidIdShouldFail() throws Exception {
+        String body = "{" +
+                "\"title\":\"new title\"," +
+                "\"description\":\"new desc\"" +
+                "}";
+        this.mockMvc.perform(put("/api/auctions/19090").content(body).contentType("application/json")).andDo(print()).andExpect(status().isBadRequest());
     }
 }
