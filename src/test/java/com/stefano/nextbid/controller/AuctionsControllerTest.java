@@ -18,6 +18,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -118,9 +119,7 @@ class AuctionsControllerTest {
 
     @Test
     void getAuctionByIdWithInvalidIdShouldFail() throws Exception {
-
-        when(auctionService.getAuctionById(any())).thenThrow(InvalidIdException.class);
-
+        doThrow(new InvalidIdException()).when(auctionService).getAuctionById(any());
         this.mockMvc.perform(get("/api/auctions/1029")).andDo(print()).andExpect(status().isBadRequest());
     }
 
@@ -139,6 +138,9 @@ class AuctionsControllerTest {
                 "\"title\":\"new title\"," +
                 "\"description\":\"new desc\"" +
                 "}";
+
+        doThrow(new InvalidIdException()).when(auctionService).updateAuctionById(any(), any());
+
         this.mockMvc.perform(put("/api/auctions/19090").content(body).contentType("application/json")).andDo(print()).andExpect(status().isBadRequest());
     }
 }
