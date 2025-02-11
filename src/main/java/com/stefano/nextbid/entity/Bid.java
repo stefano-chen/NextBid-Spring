@@ -13,7 +13,7 @@ public class Bid {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer _id;
+    private Integer id;
 
     @ManyToOne
     @JoinColumn(name = "userId", nullable = false)
@@ -24,7 +24,7 @@ public class Bid {
     private Auction auction;
 
     @Column(nullable = false)
-    private Double amount;
+    private double amount;
 
     @CreatedDate
     @Column(nullable = false, updatable = false)
@@ -36,18 +36,22 @@ public class Bid {
     public Bid() {
     }
 
-    public Bid(User user, Auction auction, Double amount) {
+    public Bid(Integer id) {
+        this.id = id;
+    }
+
+    public Bid(User user, Auction auction, double amount) {
         this.user = user;
         this.auction = auction;
         this.amount = amount;
     }
 
-    public Integer get_id() {
-        return _id;
+    public Integer getId() {
+        return id;
     }
 
-    public void set_id(Integer id) {
-        this._id = id;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public User getUser() {
@@ -66,11 +70,11 @@ public class Bid {
         this.auction = auction;
     }
 
-    public Double getAmount() {
+    public double getAmount() {
         return amount;
     }
 
-    public void setAmount(Double amount) {
+    public void setAmount(double amount) {
         this.amount = amount;
     }
 

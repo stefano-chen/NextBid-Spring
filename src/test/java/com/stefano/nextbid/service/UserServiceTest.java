@@ -82,12 +82,11 @@ class UserServiceTest {
     @Test
     void getUserAuctionWithValidIdShouldReturnList() {
         Integer id = 1;
-        User user = new User();
-        user.setId(1);
+        User user = new User(id);
 
         when(auctionRepository.findAllByOwner(any())).thenReturn(List.of(new Auction("auction", "auction", Instant.now(), 10.0, user, null)));
 
-        List<Auction> auctionList = userService.getUserAuctions(1);
+        List<Auction> auctionList = userService.getUserAuctions(id);
 
         assertEquals(user, auctionList.get(0).getOwner());
     }
@@ -101,12 +100,11 @@ class UserServiceTest {
     @Test
     void getUserWonAuctionWithValidIdShouldReturnList() {
         Integer id = 1;
-        User user = new User();
-        user.setId(1);
+        User user = new User(id);
 
         when(auctionRepository.findAllByWinner(any())).thenReturn(List.of(new Auction("auction", "auction", Instant.now(), 10.0, user, null)));
 
-        List<Auction> auctionList = userService.getUserWonAuctions(1);
+        List<Auction> auctionList = userService.getUserWonAuctions(id);
 
         assertEquals(user, auctionList.get(0).getOwner());
     }

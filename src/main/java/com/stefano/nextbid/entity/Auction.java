@@ -13,7 +13,7 @@ public class Auction {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer _id;
+    private Integer id;
 
     @Column(nullable = false)
     private String title;
@@ -25,14 +25,14 @@ public class Auction {
     private Instant dueDate;
 
     @Column(nullable = false)
-    private Double initialBid;
+    private double initialBid;
 
     @ManyToOne
     @JoinColumn(name = "ownerId", nullable = false)
     private User owner;
 
     @OneToOne
-    @JoinColumn(name = "winnerId", nullable = false)
+    @JoinColumn(name = "winnerId", nullable = true)
     private User winner;
 
     @CreatedDate
@@ -45,7 +45,11 @@ public class Auction {
     public Auction() {
     }
 
-    public Auction(String title, String description, Instant dueDate, Double initialBid, User owner, User winner) {
+    public Auction(Integer id) {
+        this.id = id;
+    }
+
+    public Auction(String title, String description, Instant dueDate, double initialBid, User owner, User winner) {
         this.title = title;
         this.description = description;
         this.dueDate = dueDate;
@@ -78,11 +82,11 @@ public class Auction {
         this.owner = owner;
     }
 
-    public Double getInitialBid() {
+    public double getInitialBid() {
         return initialBid;
     }
 
-    public void setInitialBid(Double initialBid) {
+    public void setInitialBid(double initialBid) {
         this.initialBid = initialBid;
     }
 
@@ -110,12 +114,12 @@ public class Auction {
         this.title = title;
     }
 
-    public Integer get_id() {
-        return _id;
+    public Integer getId() {
+        return id;
     }
 
-    public void set_id(Integer id) {
-        this._id = id;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public User getWinner() {
