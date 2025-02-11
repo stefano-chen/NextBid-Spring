@@ -2,6 +2,7 @@ package com.stefano.nextbid.controller;
 
 import com.stefano.nextbid.dto.AuctionDTO;
 import com.stefano.nextbid.dto.CreateAuctionBody;
+import com.stefano.nextbid.exceptions.InvalidIdException;
 import com.stefano.nextbid.exceptions.NotAuthenticatedException;
 import com.stefano.nextbid.service.AuctionService;
 import jakarta.validation.Valid;
@@ -41,7 +42,8 @@ public class AuctionsController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getAuctionDetailById(@PathVariable Integer id) {
-        return new ResponseEntity<>(HttpStatus.OK);
+        AuctionDTO auction = this.auctionService.getAuctionById(id);
+        return new ResponseEntity<>(auction, HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
@@ -79,7 +81,7 @@ public class AuctionsController {
         return "Missing/Invalid HTTP body";
     }
 
-    @ExceptionHandler({NotAuthenticatedException.class})
+    @ExceptionHandler({NotAuthenticatedException.class, InvalidIdException.class})
     public ResponseEntity<?> handleNotAuthentication(Exception e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }

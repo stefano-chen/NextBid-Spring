@@ -4,6 +4,7 @@ import com.stefano.nextbid.dto.AuctionDTO;
 import com.stefano.nextbid.dto.CreateAuctionBody;
 import com.stefano.nextbid.entity.Auction;
 import com.stefano.nextbid.entity.User;
+import com.stefano.nextbid.exceptions.InvalidIdException;
 import com.stefano.nextbid.exceptions.NotAuthenticatedException;
 import com.stefano.nextbid.repo.AuctionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,5 +49,14 @@ public class AuctionService {
 
         return auctionRepository.findAllByTitleContainingIgnoreCaseOrDescriptionContainingIgnoreCase(q,q)
                 .stream().map(auctionMapper::mapToAuctionDTO).toList();
+    }
+
+    public AuctionDTO getAuctionById(Integer id) throws InvalidIdException{
+        if (id == null)
+            throw new InvalidIdException();
+
+        Auction auction = auctionRepository.findById(id).orElseThrow(InvalidIdException::new);
+
+        return auctionMapper.mapToAuctionDTO(auction);
     }
 }

@@ -2,12 +2,10 @@ package com.stefano.nextbid.controller;
 
 import com.stefano.nextbid.dto.AuctionDTO;
 import com.stefano.nextbid.dto.CreateAuctionBody;
+import com.stefano.nextbid.entity.Auction;
 import com.stefano.nextbid.entity.User;
-import com.stefano.nextbid.exceptions.InvalidAuctionDataException;
-import com.stefano.nextbid.service.AuctionMapper;
+import com.stefano.nextbid.exceptions.InvalidIdException;
 import com.stefano.nextbid.service.AuctionService;
-import com.stefano.nextbid.service.AuthService;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -18,7 +16,7 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -106,5 +104,24 @@ class AuctionsControllerTest {
         this.mockMvc.perform(get("/api/auctions?q=title1")).andDo(print()).andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].title").value("title1"))
                 .andExpect(jsonPath("$[1]").doesNotExist());
+    }
+
+    @Test
+    void getAuctionByIdWithValidIdShouldReturnAuctionDetails() throws Exception {
+
+        AuctionDTO auction = new AuctionDTO(1,"title", "description", 10.0, Instant.now().plus(1, ChronoUnit.DAYS), Instant.now(), new User(1), null);
+
+        when(auctionService.getAuctionById(1)).thenReturn(auction);
+
+        this.mockMvc.perform(get("/api/auctions/1")).andDo(print()).andExpect(status().isOk())
+                .andExpect(jsonPath("$._id").value(1));
+    }
+
+    @Test
+    void getAuctionByIdWithInvalidIdShouldFail() throws Exception {
+
+        when(auctionService.getAuctionById(any())).thenThrow(InvalidIdException.class);
+
+        this.mockMvc.perform(get("/api/auctions/1029")).andDo(print()).andExpect(status().isBadRequest());
     }
 }

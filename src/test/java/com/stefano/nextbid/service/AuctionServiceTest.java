@@ -4,6 +4,7 @@ import com.stefano.nextbid.dto.AuctionDTO;
 import com.stefano.nextbid.dto.CreateAuctionBody;
 import com.stefano.nextbid.entity.Auction;
 import com.stefano.nextbid.entity.User;
+import com.stefano.nextbid.exceptions.InvalidIdException;
 import com.stefano.nextbid.exceptions.NotAuthenticatedException;
 import com.stefano.nextbid.repo.AuctionRepository;
 import org.junit.jupiter.api.Test;
@@ -14,6 +15,7 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -114,5 +116,28 @@ class AuctionServiceTest {
         List<AuctionDTO> auctions = auctionService.getAllAuctions(query);
 
         assertEquals(0, auctions.size());
+    }
+
+    @Test
+    void getAuctionByIdWithValidIdShouldReturnAuctionDetails() {
+        Integer id = 1;
+
+        Auction auction = new Auction(id);
+
+        when(auctionRepository.findById(id)).thenReturn(Optional.of(auction));
+        when(auctionMapper.mapToAuctionDTO(auction)).thenReturn(new AuctionDTO(1, "title", "description", 10.0,Instant.now().plus(1, ChronoUnit.DAYS),Instant.now(), new User(1), null));
+
+        AuctionDTO response = auctionService.getAuctionById(id);
+
+        assertEquals(1, response._id());
+    }
+
+    @Test
+    void getAuctionByIdWithInvalidIdShouldThrow() {
+        Integer id = 1;
+
+        when(auctionRepository.findById(id)).thenReturn(Optional.empty());
+
+        assertThrows(InvalidIdException.class, () -> auctionService.getAuctionById(id));
     }
 }
