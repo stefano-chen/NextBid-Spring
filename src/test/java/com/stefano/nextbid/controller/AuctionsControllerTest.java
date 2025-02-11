@@ -79,7 +79,7 @@ class AuctionsControllerTest {
         List<AuctionDTO> auctions = List.of(new AuctionDTO(1,"title1", "description1", 10.0, Instant.now().plus(1, ChronoUnit.DAYS), Instant.now(), new User(1), null),
                 new AuctionDTO(2,"title2", "description2", 10.0, Instant.now().plus(1, ChronoUnit.DAYS), Instant.now(), new User(2), null));
 
-        when(authService.getAllAuctions("")).thenReturn(auctions);
+        when(auctionService.getAllAuctions("")).thenReturn(auctions);
 
         this.mockMvc.perform(get("/api/auctions")).andDo(print()).andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].title").value("title1"))
@@ -92,7 +92,7 @@ class AuctionsControllerTest {
         List<AuctionDTO> auctions = List.of(new AuctionDTO(1,"title1", "description1", 10.0, Instant.now().plus(1, ChronoUnit.DAYS), Instant.now(), new User(1), null),
                 new AuctionDTO(2,"title2", "description2", 10.0, Instant.now().plus(1, ChronoUnit.DAYS), Instant.now(), new User(2), null));
 
-        when(authService.getAllAuctions("title3")).thenReturn(List.of());
+        when(auctionService.getAllAuctions("title3")).thenReturn(List.of());
 
         assertTrue(this.mockMvc.perform(get("/api/auctions")).andDo(print()).andExpect(status().isOk()).andReturn().getResponse().getContentAsString().equals("[]"));
     }
@@ -103,7 +103,7 @@ class AuctionsControllerTest {
         List<AuctionDTO> auctions = List.of(new AuctionDTO(1,"title1", "description1", 10.0, Instant.now().plus(1, ChronoUnit.DAYS), Instant.now(), new User(1), null),
                 new AuctionDTO(2,"title2", "description2", 10.0, Instant.now().plus(1, ChronoUnit.DAYS), Instant.now(), new User(2), null));
 
-        when(authService.getAllAuctions("title1")).thenReturn(auctions);
+        when(auctionService.getAllAuctions("title1")).thenReturn(auctions);
 
         this.mockMvc.perform(get("/api/auctions")).andDo(print()).andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].title").value("title1"))

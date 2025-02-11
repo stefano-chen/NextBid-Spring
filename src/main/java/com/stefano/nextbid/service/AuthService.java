@@ -3,6 +3,7 @@ package com.stefano.nextbid.service;
 import com.password4j.BcryptFunction;
 import com.password4j.Hash;
 import com.password4j.Password;
+import com.stefano.nextbid.dto.AuctionDTO;
 import com.stefano.nextbid.dto.SigninBody;
 import com.stefano.nextbid.dto.SignupBody;
 import com.stefano.nextbid.dto.UserDTO;
@@ -12,6 +13,8 @@ import com.stefano.nextbid.exceptions.UsernameAlreadyExistsException;
 import com.stefano.nextbid.repo.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class AuthService {
@@ -57,4 +60,5 @@ public class AuthService {
     public void logout() {
         sessionManager.destroy();
     }
+
 }
