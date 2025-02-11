@@ -34,8 +34,9 @@ public class AuctionsController {
     }
 
     @GetMapping("")
-    public ResponseEntity<?> getAllAuctionsFilterByQuery(@RequestParam String q) {
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<?> getAllAuctionsFilterByQuery(@RequestParam(value = "q", defaultValue = "", required = false) String q) {
+        List<AuctionDTO> auctions = this.auctionService.getAllAuctions(q);
+        return new ResponseEntity<>(auctions, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")

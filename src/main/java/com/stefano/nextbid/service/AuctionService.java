@@ -38,7 +38,15 @@ public class AuctionService {
         return auctionMapper.mapToAuctionDTO(savedAuction);
     }
 
-    public List<AuctionDTO> getAllAuctions(String q) {
-        return null;
+    public List<AuctionDTO> getAllAuctions(String q) throws IllegalArgumentException{
+        if (q == null)
+            throw new IllegalArgumentException();
+
+        if (q.isEmpty()) {
+            return auctionRepository.findAll().stream().map(auctionMapper::mapToAuctionDTO).toList();
+        }
+
+        return auctionRepository.findAllByTitleContainingIgnoreCaseOrDescriptionContainingIgnoreCase(q,q)
+                .stream().map(auctionMapper::mapToAuctionDTO).toList();
     }
 }
