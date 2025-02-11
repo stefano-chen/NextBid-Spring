@@ -83,6 +83,6 @@ public class AuctionsController {
 
     @ExceptionHandler({NotAuthenticatedException.class, InvalidIdException.class})
     public ResponseEntity<?> handleNotAuthentication(Exception e) {
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(Map.of("error", e.getMessage()), HttpStatus.BAD_REQUEST);
     }
 }
