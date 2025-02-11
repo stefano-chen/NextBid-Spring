@@ -11,6 +11,9 @@ import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -57,5 +60,59 @@ class AuctionServiceTest {
         CreateAuctionBody body = new CreateAuctionBody("title", "description", 10.0, Instant.parse("3025-01-01T12:00:50.00Z"));
         when(sessionManager.isAuthenticated()).thenReturn(false);
         assertThrows(NotAuthenticatedException.class, () -> auctionService.createAuction(body));
+    }
+
+    @Test
+    void getAllAuctionWhenThereAreNoAuctionsShouldReturnEmptyList() {
+        List<AuctionDTO> auctions = auctionService.getAllAuctions("");
+        assertEquals(0, auctions.size());
+    }
+
+    @Test
+    void getAllAuctionWhenThereAreAuctionsShouldReturnList() {
+        String query = "";
+
+        List<Auction> databaseAuctions = new ArrayList<>();
+
+        databaseAuctions.add(new Auction("title1", "description1", Instant.now().plus(1, ChronoUnit.DAYS), 10.0, new User(1), null));
+        databaseAuctions.add(new Auction("title2", "title1", Instant.now().plus(1, ChronoUnit.DAYS), 10.0, new User(1), null));
+
+        when(auctionRepository.findAll()).thenReturn(databaseAuctions);
+
+        List<AuctionDTO> auctions = auctionService.getAllAuctions(query);
+
+        assertEquals(databaseAuctions.size(), auctions.size());
+    }
+
+    @Test
+    void getAllAuctionWhenThereAreMatchingAuctionsShouldReturnList() {
+        String query = "title1";
+
+        List<Auction> databaseAuctions = new ArrayList<>();
+
+        databaseAuctions.add(new Auction("title1", "description1", Instant.now().plus(1, ChronoUnit.DAYS), 10.0, new User(1), null));
+        databaseAuctions.add(new Auction("title2", "title1", Instant.now().plus(1, ChronoUnit.DAYS), 10.0, new User(1), null));
+
+        when(auctionRepository.findAllByTitleContainingIgnoreCaseOrDescriptionContainingIgnoreCase(query,query)).thenReturn(databaseAuctions);
+
+        List<AuctionDTO> auctions = auctionService.getAllAuctions(query);
+
+        assertEquals(databaseAuctions.size(), auctions.size());
+    }
+
+    @Test
+    void getAllAuctionWhenThereAreNoMatchingAuctionsShouldReturnList() {
+        String query = "title1";
+
+        List<Auction> databaseAuctions = new ArrayList<>();
+
+        databaseAuctions.add(new Auction("title1", "description1", Instant.now().plus(1, ChronoUnit.DAYS), 10.0, new User(1), null));
+        databaseAuctions.add(new Auction("title2", "title1", Instant.now().plus(1, ChronoUnit.DAYS), 10.0, new User(1), null));
+
+        when(auctionRepository.findAllByTitleContainingIgnoreCaseOrDescriptionContainingIgnoreCase(query,query)).thenReturn(List.of());
+
+        List<AuctionDTO> auctions = auctionService.getAllAuctions(query);
+
+        assertEquals(0, auctions.size());
     }
 }

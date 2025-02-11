@@ -9,4 +9,6 @@ import java.util.List;
 public interface AuctionRepository extends JpaRepository<Auction, Integer> {
     List<Auction> findAllByOwner(User owner);
     List<Auction> findAllByWinner(User winner);
+
+    List<Auction> findAllByTitleContainingIgnoreCaseOrDescriptionContainingIgnoreCase(String title, String description);
 }

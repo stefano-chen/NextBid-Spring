@@ -9,6 +9,8 @@ import com.stefano.nextbid.repo.AuctionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class AuctionService {
 
@@ -34,5 +36,17 @@ public class AuctionService {
         Auction auction = auctionMapper.mapToAuction(body, owner);
         Auction savedAuction = auctionRepository.save(auction);
         return auctionMapper.mapToAuctionDTO(savedAuction);
+    }
+
+    public List<AuctionDTO> getAllAuctions(String q) throws IllegalArgumentException{
+        if (q == null)
+            throw new IllegalArgumentException();
+
+        if (q.isEmpty()) {
+            return auctionRepository.findAll().stream().map(auctionMapper::mapToAuctionDTO).toList();
+        }
+
+        return auctionRepository.findAllByTitleContainingIgnoreCaseOrDescriptionContainingIgnoreCase(q,q)
+                .stream().map(auctionMapper::mapToAuctionDTO).toList();
     }
 }
