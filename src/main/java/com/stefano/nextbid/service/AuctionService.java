@@ -49,4 +49,7 @@ public class AuctionService {
         return auctionRepository.findAllByTitleContainingIgnoreCaseOrDescriptionContainingIgnoreCase(q,q)
                 .stream().map(auctionMapper::mapToAuctionDTO).toList();
     }
+
+    public AuctionDTO getAuctionById(Integer id) {
+    }
 }
