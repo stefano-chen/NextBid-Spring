@@ -2,15 +2,18 @@ package com.stefano.nextbid.service;
 
 import com.stefano.nextbid.dto.AuctionDTO;
 import com.stefano.nextbid.dto.CreateAuctionBody;
+import com.stefano.nextbid.dto.UpdateAuctionBody;
 import com.stefano.nextbid.entity.Auction;
 import com.stefano.nextbid.entity.User;
 import com.stefano.nextbid.exceptions.InvalidIdException;
 import com.stefano.nextbid.exceptions.NotAuthenticatedException;
+import com.stefano.nextbid.exceptions.NotAuthorizedException;
 import com.stefano.nextbid.repo.AuctionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class AuctionService {
@@ -58,5 +61,34 @@ public class AuctionService {
         Auction auction = auctionRepository.findById(id).orElseThrow(InvalidIdException::new);
 
         return auctionMapper.mapToAuctionDTO(auction);
+    }
+
+    public void updateAuctionById(Integer id, UpdateAuctionBody body) throws IllegalArgumentException, NotAuthenticatedException, InvalidIdException, NotAuthorizedException{
+
+        if (body == null || id == null)
+            throw new IllegalArgumentException();
+
+        if (!sessionManager.isAuthenticated())
+            throw new NotAuthenticatedException();
+
+        Auction auction = auctionRepository.findById(id).orElseThrow(InvalidIdException::new);
+
+        if (!sessionManager.getUserId().equals(auction.getOwner().getId()))
+            throw new NotAuthorizedException();
+
+        boolean isUpdated = false;
+
+        if (body.title() != null && !body.title().isEmpty()) {
+            auction.setTitle(body.title());
+            isUpdated = true;
+        }
+
+        if (body.description() != null && !body.description().isEmpty()) {
+            auction.setDescription(body.description());
+            isUpdated = true;
+        }
+
+        if (isUpdated)
+            auctionRepository.save(auction);
     }
 }

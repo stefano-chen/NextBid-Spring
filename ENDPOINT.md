@@ -12,8 +12,8 @@ PUT /api/users/bio
 
 POST /api/auctions
 GET /api/auctions?q=query
-GET /api/auctions/{id}
-PUT /api/auctions/{id}
+GET /api/auctions/{id}  
+PUT /api/auctions/{id}  <-- Completed
 DELETE /api/auctions/{id}
 GET /api/auctions/{id}/bids
 POST /api/auctions/{id}/bids

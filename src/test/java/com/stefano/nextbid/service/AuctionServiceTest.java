@@ -2,10 +2,12 @@ package com.stefano.nextbid.service;
 
 import com.stefano.nextbid.dto.AuctionDTO;
 import com.stefano.nextbid.dto.CreateAuctionBody;
+import com.stefano.nextbid.dto.UpdateAuctionBody;
 import com.stefano.nextbid.entity.Auction;
 import com.stefano.nextbid.entity.User;
 import com.stefano.nextbid.exceptions.InvalidIdException;
 import com.stefano.nextbid.exceptions.NotAuthenticatedException;
+import com.stefano.nextbid.exceptions.NotAuthorizedException;
 import com.stefano.nextbid.repo.AuctionRepository;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
@@ -139,5 +141,68 @@ class AuctionServiceTest {
         when(auctionRepository.findById(id)).thenReturn(Optional.empty());
 
         assertThrows(InvalidIdException.class, () -> auctionService.getAuctionById(id));
+    }
+
+    @Test
+    void updateAuctionByIdWithValidIdShouldSuccess() {
+        Integer id = 1;
+
+        UpdateAuctionBody body = new UpdateAuctionBody("new title", "new desc");
+
+        Auction auction = new Auction("title", "desc", Instant.now().plus(1, ChronoUnit.DAYS),10.0, new User(100),null);
+
+        when(sessionManager.isAuthenticated()).thenReturn(true);
+        when(sessionManager.getUserId()).thenReturn(100);
+        when(auctionRepository.findById(id)).thenReturn(Optional.of(auction));
+
+        assertDoesNotThrow(() -> auctionService.updateAuctionById(id, body));
+    }
+
+    @Test
+    void updateAuctionByIdWithInvalidIdShouldThrow() {
+        Integer id = 190909;
+
+        UpdateAuctionBody body = new UpdateAuctionBody("new title", "new desc");
+
+        when(sessionManager.isAuthenticated()).thenReturn(true);
+        when(sessionManager.getUserId()).thenReturn(100);
+        when(auctionRepository.findById(id)).thenReturn(Optional.empty());
+
+        assertThrows(InvalidIdException.class, () -> auctionService.updateAuctionById(id, body));
+    }
+
+    @Test
+    void updateAuctionByIdWithAtLeastOneNullArgShouldThrow() {
+        assertThrows(IllegalArgumentException.class, () -> auctionService.updateAuctionById(null, null));
+    }
+
+    @Test
+    void updateAuctionByIdWhileNotAuthenticatedShouldThrow() {
+        when(sessionManager.isAuthenticated()).thenReturn(false);
+        assertThrows(NotAuthenticatedException.class, () -> auctionService.updateAuctionById(1, new UpdateAuctionBody("new title", "new desc")));
+    }
+
+    @Test
+    void updateAuctionByIdWhileNotAuthorizedShouldThrow() {
+        Integer id = 1;
+
+        Auction auction = new Auction("title", "desc", Instant.now().plus(1, ChronoUnit.DAYS),10.0, new User(100),null);
+
+        when(sessionManager.isAuthenticated()).thenReturn(true);
+        when(sessionManager.getUserId()).thenReturn(1);
+        when(auctionRepository.findById(id)).thenReturn(Optional.of(auction));
+        assertThrows(NotAuthorizedException.class, () -> auctionService.updateAuctionById(1, new UpdateAuctionBody("new title", "new desc")));
+    }
+
+    @Test
+    void updateAuctionByIdWithPartialUpdateBodyShouldSuccess() {
+        Integer id = 1;
+
+        Auction auction = new Auction("title", "desc", Instant.now().plus(1, ChronoUnit.DAYS),10.0, new User(100),null);
+
+        when(sessionManager.isAuthenticated()).thenReturn(true);
+        when(sessionManager.getUserId()).thenReturn(100);
+        when(auctionRepository.findById(id)).thenReturn(Optional.of(auction));
+        assertDoesNotThrow( () -> auctionService.updateAuctionById(1, new UpdateAuctionBody("new title", null)));
     }
 }
