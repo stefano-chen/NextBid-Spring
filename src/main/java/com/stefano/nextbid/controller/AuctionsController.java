@@ -61,16 +61,7 @@ public class AuctionsController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping("/{id}/bids")
-    public ResponseEntity<?> getAllBidsForAuctionById(@PathVariable Integer id) {
-        List<BidDTO> bids = this.auctionService.getAuctionBidsById(id);
-        return new ResponseEntity<>(bids, HttpStatus.OK);
-    }
 
-    @PostMapping("/{id}/bids")
-    public ResponseEntity<?> createBidForAuctionById(@PathVariable Integer id) {
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<?> handleInvalidData(MethodArgumentNotValidException e) {

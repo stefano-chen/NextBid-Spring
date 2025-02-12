@@ -24,15 +24,12 @@ public class AuctionService {
 
     private final AuctionRepository auctionRepository;
 
-    private final BidService bidService;
-
     private final SessionManager sessionManager;
 
     @Autowired
-    public AuctionService(AuctionMapper auctionMapper, AuctionRepository auctionRepository, BidService bidService, SessionManager sessionManager) {
+    public AuctionService(AuctionMapper auctionMapper, AuctionRepository auctionRepository, SessionManager sessionManager) {
         this.auctionMapper = auctionMapper;
         this.auctionRepository = auctionRepository;
-        this.bidService = bidService;
         this.sessionManager = sessionManager;
     }
 
@@ -112,12 +109,4 @@ public class AuctionService {
         auctionRepository.delete(auction);
     }
 
-    public List<BidDTO> getAuctionBidsById(Integer auctionId) throws IllegalArgumentException, InvalidIdException{
-        if (auctionId == null)
-            throw new IllegalArgumentException();
-
-        auctionRepository.findById(auctionId).orElseThrow(InvalidIdException::new);
-
-        return this.bidService.findByAuctionId(auctionId);
-    }
 }
