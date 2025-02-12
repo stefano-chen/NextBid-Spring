@@ -33,7 +33,9 @@ class AuctionServiceTest {
 
     private SessionManager sessionManager = mock(SessionManager.class);
 
-    private AuctionService auctionService = new AuctionService(auctionMapper, auctionRepository, sessionManager);
+    private BidService bidService = mock(BidService.class);
+
+    private AuctionService auctionService = new AuctionService(auctionMapper, auctionRepository,bidService, sessionManager);
 
     @Test
     void createAuctionWithNullArgShouldThrow() {
