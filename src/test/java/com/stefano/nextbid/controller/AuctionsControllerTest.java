@@ -16,8 +16,7 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
@@ -158,5 +157,41 @@ class AuctionsControllerTest {
         doThrow(new InvalidIdException()).when(auctionService).deleteAuctionById(id);
 
         this.mockMvc.perform(delete("/api/auctions/91029")).andDo(print()).andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void getAuctionBidsWithValidIdWhenThereAreBidsShouldSuccess() throws Exception {
+
+        List<BidDTO> bids = List.of(
+                new BidDTO(1, new User(1), new Auction(1), 10.0, Instant.now()),
+                new BidDTO(2, new User(10), new Auction(1), 11.0, Instant.now())
+        );
+
+        when(auctionService.getAuctionBidsById(1)).thenReturn(bids);
+
+        assertTrue(this.mockMvc.perform(get("/api/auctions/1/bids")).andDo(print()).andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString().length() > 2);
+    }
+
+    @Test
+    void getAuctionBidsWithValidIdWhenThereAreNoBidsShouldReturnEmptyList() throws Exception {
+
+        List<BidDTO> bids = List.of(
+                new BidDTO(1, new User(1), new Auction(1), 10.0, Instant.now()),
+                new BidDTO(2, new User(10), new Auction(1), 11.0, Instant.now())
+        );
+
+        when(auctionService.getAuctionBidsById(1)).thenReturn(bids);
+
+        assertEquals(2, this.mockMvc.perform(get("/api/auctions/1/bids")).andDo(print()).andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString().length());
+    }
+
+    @Test
+    void getAuctionBidsWithInvalidIdShouldThrow() throws Exception {
+
+        doThrow(new InvalidIdException()).when(auctionService).getAuctionBidsById(9009);
+
+        this.mockMvc.perform(get("/api/auctions/9009/bids")).andDo(print()).andExpect(status().isBadRequest());
     }
 }
