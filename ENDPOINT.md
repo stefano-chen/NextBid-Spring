@@ -14,8 +14,8 @@ POST /api/auctions
 GET /api/auctions?q=query
 GET /api/auctions/{id}  
 PUT /api/auctions/{id}
-DELETE /api/auctions/{id}   <-- Completed
-GET /api/auctions/{id}/bids
+DELETE /api/auctions/{id}
+GET /api/auctions/{id}/bids   <-- Completed
 POST /api/auctions/{id}/bids
 
 GET /api/bids/{id}

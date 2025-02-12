@@ -1,6 +1,7 @@
 package com.stefano.nextbid.controller;
 
 import com.stefano.nextbid.dto.AuctionDTO;
+import com.stefano.nextbid.dto.BidDTO;
 import com.stefano.nextbid.dto.CreateAuctionBody;
 import com.stefano.nextbid.dto.UpdateAuctionBody;
 import com.stefano.nextbid.exceptions.InvalidIdException;
@@ -62,7 +63,8 @@ public class AuctionsController {
 
     @GetMapping("/{id}/bids")
     public ResponseEntity<?> getAllBidsForAuctionById(@PathVariable Integer id) {
-        return new ResponseEntity<>(HttpStatus.OK);
+        List<BidDTO> bids = this.auctionService.getAuctionBidsById(id);
+        return new ResponseEntity<>(bids, HttpStatus.OK);
     }
 
     @PostMapping("/{id}/bids")
