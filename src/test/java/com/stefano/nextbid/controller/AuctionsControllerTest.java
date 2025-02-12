@@ -16,6 +16,7 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
@@ -142,5 +143,20 @@ class AuctionsControllerTest {
         doThrow(new InvalidIdException()).when(auctionService).updateAuctionById(any(), any());
 
         this.mockMvc.perform(put("/api/auctions/19090").content(body).contentType("application/json")).andDo(print()).andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void deleteAuctionByIdWithValidIdShouldSuccess() throws Exception {
+        this.mockMvc.perform(delete("/api/auctions/1")).andDo(print()).andExpect(status().isOk());
+    }
+
+    @Test
+    void deleteAuctionByIdWithInvalidIdShouldFail() throws Exception {
+
+        Integer id = 91029;
+
+        doThrow(new InvalidIdException()).when(auctionService).deleteAuctionById(id);
+
+        this.mockMvc.perform(delete("/api/auctions/91029")).andDo(print()).andExpect(status().isBadRequest());
     }
 }

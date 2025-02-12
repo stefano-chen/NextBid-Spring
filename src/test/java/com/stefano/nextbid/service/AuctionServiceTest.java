@@ -205,4 +205,52 @@ class AuctionServiceTest {
         when(auctionRepository.findById(id)).thenReturn(Optional.of(auction));
         assertDoesNotThrow( () -> auctionService.updateAuctionById(1, new UpdateAuctionBody("new title", null)));
     }
+
+    @Test
+    void deleteAuctionByIdWithValidIdShouldSuccess() {
+        Integer id = 1;
+
+        Auction auction = new Auction("title", "desc", Instant.now().plus(1, ChronoUnit.DAYS),10.0, new User(100),null);
+
+        when(sessionManager.isAuthenticated()).thenReturn(true);
+        when(sessionManager.getUserId()).thenReturn(100);
+        when(auctionRepository.findById(id)).thenReturn(Optional.of(auction));
+
+        assertDoesNotThrow(() -> auctionService.deleteAuctionById(id));
+    }
+
+
+    @Test
+    void deleteAuctionByIdWithInvalidIdShouldThrow() {
+        Integer id = 190909;
+
+        when(sessionManager.isAuthenticated()).thenReturn(true);
+        when(sessionManager.getUserId()).thenReturn(100);
+        when(auctionRepository.findById(id)).thenReturn(Optional.empty());
+
+        assertThrows(InvalidIdException.class, () -> auctionService.deleteAuctionById(id));
+    }
+
+    @Test
+    void deleteAuctionByIdWithNullArgShouldThrow() {
+        assertThrows(IllegalArgumentException.class, () -> auctionService.deleteAuctionById(null));
+    }
+
+    @Test
+    void deleteAuctionByIdWhileNotAuthenticatedShouldThrow() {
+        when(sessionManager.isAuthenticated()).thenReturn(false);
+        assertThrows(NotAuthenticatedException.class, () -> auctionService.deleteAuctionById(1));
+    }
+
+    @Test
+    void deleteAuctionByIdWhileNotAuthorizedShouldThrow() {
+        Integer id = 1;
+
+        Auction auction = new Auction("title", "desc", Instant.now().plus(1, ChronoUnit.DAYS),10.0, new User(100),null);
+
+        when(sessionManager.isAuthenticated()).thenReturn(true);
+        when(sessionManager.getUserId()).thenReturn(1);
+        when(auctionRepository.findById(id)).thenReturn(Optional.of(auction));
+        assertThrows(NotAuthorizedException.class, () -> auctionService.deleteAuctionById(1));
+    }
 }
