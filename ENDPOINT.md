@@ -17,3 +17,5 @@ PUT /api/auctions/{id}  <-- Completed
 DELETE /api/auctions/{id}
 GET /api/auctions/{id}/bids
 POST /api/auctions/{id}/bids
+
+GET /api/bids/{id}
