@@ -1,6 +1,7 @@
 package com.stefano.nextbid.controller;
 
 import com.stefano.nextbid.dto.AuctionDTO;
+import com.stefano.nextbid.dto.BidDTO;
 import com.stefano.nextbid.dto.CreateAuctionBody;
 import com.stefano.nextbid.entity.Auction;
 import com.stefano.nextbid.entity.User;
