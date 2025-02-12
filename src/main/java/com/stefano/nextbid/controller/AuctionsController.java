@@ -56,6 +56,7 @@ public class AuctionsController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteAuctionById(@PathVariable Integer id) {
+        this.auctionService.deleteAuctionById(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

@@ -232,8 +232,8 @@ class AuctionServiceTest {
     }
 
     @Test
-    void deleteAuctionByIdWithAtLeastOneNullArgShouldThrow() {
-        assertThrows(InvalidIdException.class, () -> auctionService.deleteAuctionById(null));
+    void deleteAuctionByIdWithNullArgShouldThrow() {
+        assertThrows(IllegalArgumentException.class, () -> auctionService.deleteAuctionById(null));
     }
 
     @Test

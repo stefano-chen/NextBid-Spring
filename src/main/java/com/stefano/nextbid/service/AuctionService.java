@@ -91,4 +91,19 @@ public class AuctionService {
         if (isUpdated)
             auctionRepository.save(auction);
     }
+
+    public void deleteAuctionById(Integer id) throws IllegalArgumentException, NotAuthenticatedException, InvalidIdException, NotAuthorizedException {
+        if (id == null)
+            throw new IllegalArgumentException();
+
+        if (!sessionManager.isAuthenticated())
+            throw new NotAuthenticatedException();
+
+        Auction auction = auctionRepository.findById(id).orElseThrow(InvalidIdException::new);
+
+        if (!sessionManager.getUserId().equals((auction.getOwner().getId())))
+            throw new NotAuthorizedException();
+
+        auctionRepository.delete(auction);
+    }
 }
