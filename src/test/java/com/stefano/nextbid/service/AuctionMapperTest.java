@@ -5,7 +5,6 @@ import com.stefano.nextbid.dto.CreateAuctionBody;
 import com.stefano.nextbid.entity.Auction;
 import com.stefano.nextbid.entity.User;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.Instant;
 
@@ -26,7 +25,7 @@ class AuctionMapperTest {
         assertEquals("description", auction.getDescription());
         assertEquals(10, auction.getInitialBid());
         assertEquals(Instant.parse("3024-02-20T07:00:00.00Z"), auction.getDueDate());
-        assertEquals(1, auction.getOwner().getId());
+        assertEquals(1, auction.getOwner().get_id());
     }
 
     @Test
@@ -41,6 +40,6 @@ class AuctionMapperTest {
         assertEquals("description", auctionDTO.description());
         assertEquals(10, auctionDTO.initialBid());
         assertEquals(Instant.parse("3024-02-20T07:00:00.00Z"), auctionDTO.dueDate());
-        assertEquals(1, auctionDTO.owner().getId());
+        assertEquals(1, auctionDTO.owner().get_id());
     }
 }

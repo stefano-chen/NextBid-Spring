@@ -1,13 +1,11 @@
 package com.stefano.nextbid.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.Instant;
-import java.util.List;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
@@ -16,7 +14,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Integer _id;
 
     @Column(unique = true, nullable = false)
     private String username;
@@ -53,7 +51,7 @@ public class User {
     }
 
     public User(Integer id) {
-        this.id = id;
+        this._id = id;
     }
 
     public Integer getVersion() {
@@ -112,18 +110,18 @@ public class User {
         this.username = username;
     }
 
-    public Integer getId() {
-        return id;
+    public Integer get_id() {
+        return _id;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void set_id(Integer id) {
+        this._id = id;
     }
 
     @Override
     public String toString() {
         return "User{" +
-                "id=" + id +
+                "id=" + _id +
                 ", username='" + username + '\'' +
                 ", name='" + name + '\'' +
                 ", surname='" + surname + '\'' +

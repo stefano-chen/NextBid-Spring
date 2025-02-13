@@ -1,7 +1,6 @@
 package com.stefano.nextbid.service;
 
 import com.stefano.nextbid.dto.AuctionDTO;
-import com.stefano.nextbid.dto.BidDTO;
 import com.stefano.nextbid.dto.CreateAuctionBody;
 import com.stefano.nextbid.dto.UpdateAuctionBody;
 import com.stefano.nextbid.entity.Auction;
@@ -10,12 +9,10 @@ import com.stefano.nextbid.exceptions.InvalidIdException;
 import com.stefano.nextbid.exceptions.NotAuthenticatedException;
 import com.stefano.nextbid.exceptions.NotAuthorizedException;
 import com.stefano.nextbid.repo.AuctionRepository;
-import com.stefano.nextbid.repo.BidRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
 
 @Service
 public class AuctionService {
@@ -75,7 +72,7 @@ public class AuctionService {
 
         Auction auction = auctionRepository.findById(id).orElseThrow(InvalidIdException::new);
 
-        if (!sessionManager.getUserId().equals(auction.getOwner().getId()))
+        if (!sessionManager.getUserId().equals(auction.getOwner().get_id()))
             throw new NotAuthorizedException();
 
         boolean isUpdated = false;
@@ -103,7 +100,7 @@ public class AuctionService {
 
         Auction auction = auctionRepository.findById(id).orElseThrow(InvalidIdException::new);
 
-        if (!sessionManager.getUserId().equals((auction.getOwner().getId())))
+        if (!sessionManager.getUserId().equals((auction.getOwner().get_id())))
             throw new NotAuthorizedException();
 
         auctionRepository.delete(auction);
