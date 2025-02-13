@@ -40,7 +40,7 @@ public class BidsController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping("/api/bids{id}")
+    @GetMapping("/api/bids/{id}")
     public ResponseEntity<?> getBidDetailsById(@PathVariable Integer id) {
         return new ResponseEntity<>(HttpStatus.OK);
     }

@@ -134,4 +134,25 @@ class BidServiceTest {
 
         assertDoesNotThrow(() -> bidService.createBid(1, new CreateBidBody(1000)));
     }
+
+    @Test
+    void getBidDetailWithValidIdShouldSuccess() {
+        Bid foundBid = new Bid(new User(1), new Auction(1), 100);
+        foundBid.setId(1);
+
+        when(bidRepository.findById(1)).thenReturn(Optional.of(foundBid));
+        when(bidMapper.mapToBidDTO(foundBid)).thenCallRealMethod();
+
+        BidDTO result = bidService.getBidDetail(1);
+
+        assertEquals(1, result._id());
+    }
+
+    @Test
+    void getBidDetailWithInvalidIdShouldThrow() {
+
+        when(bidRepository.findById(1)).thenReturn(Optional.empty());
+
+        assertThrows(InvalidIdException.class, () -> bidService.getBidDetail(10930));
+    }
 }
