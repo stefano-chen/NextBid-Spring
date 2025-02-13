@@ -71,4 +71,13 @@ public class BidService {
         bidRepository.save(new Bid(authUser, new Auction(auctionId), body.amount()));
 
     }
+
+    public BidDTO getBidDetail(Integer id) {
+        if (id == null)
+            throw new IllegalArgumentException();
+
+        Bid bid = bidRepository.findById(id).orElseThrow(InvalidIdException::new);
+
+        return bidMapper.mapToBidDTO(bid);
+    }
 }
