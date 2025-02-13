@@ -1,5 +1,6 @@
 package com.stefano.nextbid.controller;
 
+import com.stefano.nextbid.dto.AuctionDTO;
 import com.stefano.nextbid.dto.UserDTO;
 import com.stefano.nextbid.entity.Auction;
 import com.stefano.nextbid.entity.User;
@@ -89,8 +90,8 @@ class UsersControllerTest {
     @Test
     void getUserAuctionsWithValidIdShouldReturnListOfAuctions() throws Exception {
         User user = new User(1);
-        List<Auction> auctions = List.of(new Auction("auction1", "auction", Instant.now(), 10.0, user, null),
-                new Auction("auction2", "auction", Instant.now(), 10.0, user, null));
+        List<AuctionDTO> auctions = List.of(new AuctionDTO(1, "auction1", "auction",10.0, Instant.now(),Instant.now(), user, null),
+                new AuctionDTO(2, "auction2", "auction", 10.0, Instant.now(), Instant.now(),  user, null));
         when(userService.getUserAuctions(1)).thenReturn(auctions);
         this.mockMvc.perform(get("/api/users/1/auctions")).andDo(print()).andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].owner._id").value(1))
@@ -108,8 +109,8 @@ class UsersControllerTest {
     void getUserWonAuctionsWithValidIdShouldReturnListOfAuctions() throws Exception {
         User owner = new User(100);
         User user = new User(1);
-        List<Auction> auctions = List.of(new Auction("auction1", "auction", Instant.now(), 10.0, owner, user),
-                new Auction("auction2", "auction", Instant.now(), 10.0, owner, user));
+        List<AuctionDTO> auctions = List.of(new AuctionDTO(1,"auction1", "auction",10.0, Instant.now(), Instant.now(), owner, user),
+                new AuctionDTO(2,"auction2", "auction",10.0, Instant.now(), Instant.now(), owner, user));
         when(userService.getUserWonAuctions(1)).thenReturn(auctions);
         this.mockMvc.perform(get("/api/users/1/auctions/won")).andDo(print()).andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].winner._id").value(1))

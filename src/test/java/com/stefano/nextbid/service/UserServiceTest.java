@@ -1,5 +1,6 @@
 package com.stefano.nextbid.service;
 
+import com.stefano.nextbid.dto.AuctionDTO;
 import com.stefano.nextbid.dto.UserDTO;
 import com.stefano.nextbid.entity.Auction;
 import com.stefano.nextbid.entity.User;
@@ -29,7 +30,9 @@ class UserServiceTest {
 
     private SessionManager sessionManager = mock(SessionManager.class);
 
-    private UserService userService = new UserService(userRepository, auctionRepository, userMapper, sessionManager);
+    private AuctionMapper auctionMapper = mock(AuctionMapper.class);
+
+    private UserService userService = new UserService(userRepository, auctionRepository, userMapper, sessionManager, auctionMapper);
 
     @Test
     void getAllUsersWithNullArgShouldThrow() {
@@ -86,9 +89,11 @@ class UserServiceTest {
 
         when(auctionRepository.findAllByOwner(any())).thenReturn(List.of(new Auction("auction", "auction", Instant.now(), 10.0, user, null)));
 
-        List<Auction> auctionList = userService.getUserAuctions(id);
+        when(auctionMapper.mapToAuctionDTO(any())).thenCallRealMethod();
 
-        assertEquals(user, auctionList.get(0).getOwner());
+        List<AuctionDTO> auctionList = userService.getUserAuctions(id);
+
+        assertEquals(user, auctionList.get(0).owner());
     }
 
     @Test
@@ -104,9 +109,11 @@ class UserServiceTest {
 
         when(auctionRepository.findAllByWinner(any())).thenReturn(List.of(new Auction("auction", "auction", Instant.now(), 10.0, user, null)));
 
-        List<Auction> auctionList = userService.getUserWonAuctions(id);
+        when(auctionMapper.mapToAuctionDTO(any())).thenCallRealMethod();
 
-        assertEquals(user, auctionList.get(0).getOwner());
+        List<AuctionDTO> auctionList = userService.getUserWonAuctions(id);
+
+        assertEquals(user, auctionList.get(0).owner());
     }
 
     @Test

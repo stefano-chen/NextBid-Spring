@@ -1,5 +1,6 @@
 package com.stefano.nextbid.service;
 
+import com.stefano.nextbid.dto.AuctionDTO;
 import com.stefano.nextbid.dto.UserDTO;
 import com.stefano.nextbid.entity.Auction;
 import com.stefano.nextbid.entity.User;
@@ -23,13 +24,15 @@ public class UserService {
     private final UserMapper userMapper;
 
     private final SessionManager sessionManager;
+    private final AuctionMapper auctionMapper;
 
     @Autowired
-    public UserService(UserRepository userRepository, AuctionRepository auctionRepository, UserMapper userMapper, SessionManager sessionManager) {
+    public UserService(UserRepository userRepository, AuctionRepository auctionRepository, UserMapper userMapper, SessionManager sessionManager, AuctionMapper auctionMapper) {
         this.userRepository = userRepository;
         this.auctionRepository = auctionRepository;
         this.userMapper = userMapper;
         this.sessionManager = sessionManager;
+        this.auctionMapper = auctionMapper;
     }
 
     public List<UserDTO> getAllUsers(String q) throws IllegalArgumentException {
@@ -61,19 +64,19 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public List<Auction> getUserAuctions(Integer id) {
+    public List<AuctionDTO> getUserAuctions(Integer id) {
         if (id == null)
             throw new IllegalArgumentException();
 
         User user = new User(id);
-        return auctionRepository.findAllByOwner(user);
+        return auctionRepository.findAllByOwner(user).stream().map(auctionMapper::mapToAuctionDTO).toList();
     }
 
-    public List<Auction> getUserWonAuctions(Integer id) {
+    public List<AuctionDTO> getUserWonAuctions(Integer id) {
         if (id == null)
             throw new IllegalArgumentException();
 
         User user = new User(id);
-        return auctionRepository.findAllByWinner(user);
+        return auctionRepository.findAllByWinner(user).stream().map(auctionMapper::mapToAuctionDTO).toList();
     }
 }

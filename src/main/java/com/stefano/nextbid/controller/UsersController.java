@@ -1,5 +1,6 @@
 package com.stefano.nextbid.controller;
 
+import com.stefano.nextbid.dto.AuctionDTO;
 import com.stefano.nextbid.dto.UserDTO;
 import com.stefano.nextbid.entity.Auction;
 import com.stefano.nextbid.exceptions.InvalidIdException;
@@ -38,13 +39,13 @@ public class UsersController {
 
     @GetMapping("/{id}/auctions")
     public ResponseEntity<?> getUserAuctions(@PathVariable Integer id) {
-        List<Auction> auctionList = userService.getUserAuctions(id);
+        List<AuctionDTO> auctionList = userService.getUserAuctions(id);
         return new ResponseEntity<>(auctionList, HttpStatus.OK);
     }
 
     @GetMapping("/{id}/auctions/won")
     public ResponseEntity<?> getUserWonAuctions(@PathVariable Integer id) {
-        List<Auction> auctionList = userService.getUserWonAuctions(id);
+        List<AuctionDTO> auctionList = userService.getUserWonAuctions(id);
         return new ResponseEntity<>(auctionList, HttpStatus.OK);
     }
 
