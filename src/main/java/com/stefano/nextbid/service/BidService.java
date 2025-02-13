@@ -56,10 +56,12 @@ public class BidService {
         if (Instant.now().isAfter(auction.getDueDate()))
             throw new AuctionClosedException();
 
-        double lastBid = bidRepository.findAllByAuctionOrderByAmountDesc(new Auction(auctionId)).getFirst().getAmount();
+        List<Bid> allBids = bidRepository.findAllByAuctionOrderByAmountDesc(new Auction(auctionId));
 
-        if (lastBid > body.amount())
-            throw new AmountTooLowException();
+        double lastBid = allBids.isEmpty() ? auction.getInitialBid() : allBids.getFirst().getAmount();
+
+        if (lastBid >= body.amount())
+                throw new AmountTooLowException();
 
         User authUser = new User(sessionManager.getUserId());
 
