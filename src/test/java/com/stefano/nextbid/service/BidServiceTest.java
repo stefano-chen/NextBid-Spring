@@ -54,4 +54,20 @@ class BidServiceTest {
 
         assertEquals(0, bids.size());
     }
+
+    @Test
+    void createBidWithNullArgShouldThrow() {
+        assertThrows(IllegalArgumentException.class, () -> bidService.createBid(null,null));
+    }
+
+    @Test
+    void createBidWithValidDataShouldSuccess() {
+        CreateBidBody body = new CreateBidBody(10);
+        Integer auctionId = 1;
+
+        when(bidRepository.save(any()));
+        when(bidMapper.mapToBidDTO(any())).thenCallRealMethod();
+
+        assertDoesNotThrow(() -> bidService.createBid(auctionId, body));
+    }
 }
