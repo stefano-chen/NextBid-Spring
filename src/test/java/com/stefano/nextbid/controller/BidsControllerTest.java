@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -79,7 +80,8 @@ class BidsControllerTest {
 
     @Test
     void getBidDetailWithInvalidIdShouldFail() throws Exception {
-        when(bidService.getBidDetail(1291)).thenThrow(InvalidIdException.class);
+
+        doThrow(new InvalidIdException()).when(bidService).getBidDetail(1291);
 
         this.mockMvc.perform(get("/api/bids/1291")).andDo(print()).andExpect(status().isBadRequest());
     }

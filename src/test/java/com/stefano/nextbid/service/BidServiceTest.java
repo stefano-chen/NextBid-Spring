@@ -149,6 +149,11 @@ class BidServiceTest {
     }
 
     @Test
+    void getBidDetailWithNullArgShouldThrow() {
+        assertThrows(IllegalArgumentException.class, () -> bidService.getBidDetail(null));
+    }
+
+    @Test
     void getBidDetailWithInvalidIdShouldThrow() {
 
         when(bidRepository.findById(1)).thenReturn(Optional.empty());
