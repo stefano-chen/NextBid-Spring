@@ -2,7 +2,6 @@ package com.stefano.nextbid.controller;
 
 import com.stefano.nextbid.dto.AuctionDTO;
 import com.stefano.nextbid.dto.UserDTO;
-import com.stefano.nextbid.entity.Auction;
 import com.stefano.nextbid.exceptions.InvalidIdException;
 import com.stefano.nextbid.exceptions.NotAuthenticatedException;
 import com.stefano.nextbid.service.UserService;

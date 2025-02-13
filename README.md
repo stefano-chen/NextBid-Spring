@@ -1,12 +1,12 @@
 # Introduction
 
 Hi, I'm Stefano Chen a master's degree student in Computer Engineering at the University of Trieste in Italy.\
-This is an exam project for the Web Development 2024-2025 course.\
+This is an exam project for the Software Development Methods 2024-2025 course.\
 The technologies used in this project are:
 
-- [NodeJS](https://nodejs.org/en/about)
-- [MongoDB](https://www.mongodb.com/)
-- [ExpressJS](https://expressjs.com/)
+- [Java 21](https://www.oracle.com/it/java/technologies/downloads/#java21)
+- [MySQL](https://www.mysql.com/)
+- [Spring](https://spring.io/)
 - [VueJS](https://vuejs.org/)
 - [Tailwind CSS](https://tailwindcss.com/)
 - [Docker](https://www.docker.com/)
@@ -61,7 +61,7 @@ To run locally follow this steps:
    ```
 
 ### Note
-In the current release (v1.0.3), the web app is not fully optimized for all screen sizes.\
+In the current release, the web app is not fully optimized for all screen sizes.\
 We are actively working to improve responsiveness in an upcoming update. Thank you for your patience!
 
 # Assignment

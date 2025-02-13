@@ -10,8 +10,6 @@ import com.stefano.nextbid.exceptions.NotAuthenticatedException;
 import com.stefano.nextbid.exceptions.NotAuthorizedException;
 import com.stefano.nextbid.repo.AuctionRepository;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentMatchers;
-import org.mockito.Mockito;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -97,7 +95,7 @@ class AuctionServiceTest {
         databaseAuctions.add(new Auction("title1", "description1", Instant.now().plus(1, ChronoUnit.DAYS), 10.0, new User(1), null));
         databaseAuctions.add(new Auction("title2", "title1", Instant.now().plus(1, ChronoUnit.DAYS), 10.0, new User(1), null));
 
-        when(auctionRepository.findAllByTitleContainingIgnoreCaseOrDescriptionContainingIgnoreCase(query,query)).thenReturn(databaseAuctions);
+        when(auctionRepository.findAllByTitleContainingIgnoreCaseOrDescriptionContainingIgnoreCase(query, query)).thenReturn(databaseAuctions);
 
         List<AuctionDTO> auctions = auctionService.getAllAuctions(query);
 
@@ -113,7 +111,7 @@ class AuctionServiceTest {
         databaseAuctions.add(new Auction("title1", "description1", Instant.now().plus(1, ChronoUnit.DAYS), 10.0, new User(1), null));
         databaseAuctions.add(new Auction("title2", "title1", Instant.now().plus(1, ChronoUnit.DAYS), 10.0, new User(1), null));
 
-        when(auctionRepository.findAllByTitleContainingIgnoreCaseOrDescriptionContainingIgnoreCase(query,query)).thenReturn(List.of());
+        when(auctionRepository.findAllByTitleContainingIgnoreCaseOrDescriptionContainingIgnoreCase(query, query)).thenReturn(List.of());
 
         List<AuctionDTO> auctions = auctionService.getAllAuctions(query);
 
@@ -127,7 +125,7 @@ class AuctionServiceTest {
         Auction auction = new Auction(id);
 
         when(auctionRepository.findById(id)).thenReturn(Optional.of(auction));
-        when(auctionMapper.mapToAuctionDTO(auction)).thenReturn(new AuctionDTO(1, "title", "description", 10.0,Instant.now().plus(1, ChronoUnit.DAYS),Instant.now(), new User(1), null));
+        when(auctionMapper.mapToAuctionDTO(auction)).thenReturn(new AuctionDTO(1, "title", "description", 10.0, Instant.now().plus(1, ChronoUnit.DAYS), Instant.now(), new User(1), null));
 
         AuctionDTO response = auctionService.getAuctionById(id);
 
@@ -149,7 +147,7 @@ class AuctionServiceTest {
 
         UpdateAuctionBody body = new UpdateAuctionBody("new title", "new desc");
 
-        Auction auction = new Auction("title", "desc", Instant.now().plus(1, ChronoUnit.DAYS),10.0, new User(100),null);
+        Auction auction = new Auction("title", "desc", Instant.now().plus(1, ChronoUnit.DAYS), 10.0, new User(100), null);
 
         when(sessionManager.isAuthenticated()).thenReturn(true);
         when(sessionManager.getUserId()).thenReturn(100);
@@ -186,7 +184,7 @@ class AuctionServiceTest {
     void updateAuctionByIdWhileNotAuthorizedShouldThrow() {
         Integer id = 1;
 
-        Auction auction = new Auction("title", "desc", Instant.now().plus(1, ChronoUnit.DAYS),10.0, new User(100),null);
+        Auction auction = new Auction("title", "desc", Instant.now().plus(1, ChronoUnit.DAYS), 10.0, new User(100), null);
 
         when(sessionManager.isAuthenticated()).thenReturn(true);
         when(sessionManager.getUserId()).thenReturn(1);
@@ -198,19 +196,19 @@ class AuctionServiceTest {
     void updateAuctionByIdWithPartialUpdateBodyShouldSuccess() {
         Integer id = 1;
 
-        Auction auction = new Auction("title", "desc", Instant.now().plus(1, ChronoUnit.DAYS),10.0, new User(100),null);
+        Auction auction = new Auction("title", "desc", Instant.now().plus(1, ChronoUnit.DAYS), 10.0, new User(100), null);
 
         when(sessionManager.isAuthenticated()).thenReturn(true);
         when(sessionManager.getUserId()).thenReturn(100);
         when(auctionRepository.findById(id)).thenReturn(Optional.of(auction));
-        assertDoesNotThrow( () -> auctionService.updateAuctionById(1, new UpdateAuctionBody("new title", null)));
+        assertDoesNotThrow(() -> auctionService.updateAuctionById(1, new UpdateAuctionBody("new title", null)));
     }
 
     @Test
     void deleteAuctionByIdWithValidIdShouldSuccess() {
         Integer id = 1;
 
-        Auction auction = new Auction("title", "desc", Instant.now().plus(1, ChronoUnit.DAYS),10.0, new User(100),null);
+        Auction auction = new Auction("title", "desc", Instant.now().plus(1, ChronoUnit.DAYS), 10.0, new User(100), null);
 
         when(sessionManager.isAuthenticated()).thenReturn(true);
         when(sessionManager.getUserId()).thenReturn(100);
@@ -246,7 +244,7 @@ class AuctionServiceTest {
     void deleteAuctionByIdWhileNotAuthorizedShouldThrow() {
         Integer id = 1;
 
-        Auction auction = new Auction("title", "desc", Instant.now().plus(1, ChronoUnit.DAYS),10.0, new User(100),null);
+        Auction auction = new Auction("title", "desc", Instant.now().plus(1, ChronoUnit.DAYS), 10.0, new User(100), null);
 
         when(sessionManager.isAuthenticated()).thenReturn(true);
         when(sessionManager.getUserId()).thenReturn(1);

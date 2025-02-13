@@ -1,7 +1,6 @@
 package com.stefano.nextbid.controller;
 
 import com.stefano.nextbid.dto.AuctionDTO;
-import com.stefano.nextbid.dto.BidDTO;
 import com.stefano.nextbid.dto.CreateAuctionBody;
 import com.stefano.nextbid.dto.UpdateAuctionBody;
 import com.stefano.nextbid.exceptions.InvalidIdException;
@@ -50,7 +49,7 @@ public class AuctionsController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateAuctionById(@PathVariable Integer id,@RequestBody UpdateAuctionBody body) {
+    public ResponseEntity<?> updateAuctionById(@PathVariable Integer id, @RequestBody UpdateAuctionBody body) {
         this.auctionService.updateAuctionById(id, body);
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -60,7 +59,6 @@ public class AuctionsController {
         this.auctionService.deleteAuctionById(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
 
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
