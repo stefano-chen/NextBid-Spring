@@ -46,7 +46,7 @@ public class AuctionService {
             throw new IllegalArgumentException();
 
         if (q.isEmpty()) {
-            return auctionRepository.findAll().stream().map(auctionMapper::mapToAuctionDTO).toList();
+            return auctionRepository.findAllByOrderByCreatedAtDesc().stream().map(auctionMapper::mapToAuctionDTO).toList();
         }
 
         return auctionRepository.findAllByTitleContainingIgnoreCaseOrDescriptionContainingIgnoreCase(q,q)

@@ -81,7 +81,7 @@ class AuctionServiceTest {
         databaseAuctions.add(new Auction("title1", "description1", Instant.now().plus(1, ChronoUnit.DAYS), 10.0, new User(1), null));
         databaseAuctions.add(new Auction("title2", "title1", Instant.now().plus(1, ChronoUnit.DAYS), 10.0, new User(1), null));
 
-        when(auctionRepository.findAll()).thenReturn(databaseAuctions);
+        when(auctionRepository.findAllByOrderByCreatedAtDesc()).thenReturn(databaseAuctions);
 
         List<AuctionDTO> auctions = auctionService.getAllAuctions(query);
 
