@@ -11,8 +11,6 @@ import com.stefano.nextbid.exceptions.InvalidIdException;
 import com.stefano.nextbid.exceptions.NotAuthenticatedException;
 import com.stefano.nextbid.repo.AuctionRepository;
 import com.stefano.nextbid.repo.BidRepository;
-import jakarta.transaction.Transactional;
-import org.aspectj.weaver.ast.Not;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -36,7 +34,7 @@ public class BidService {
         this.sessionManager = sessionManager;
     }
 
-    public List<BidDTO> findByAuctionId(Integer auctionId) throws IllegalArgumentException{
+    public List<BidDTO> findByAuctionId(Integer auctionId) throws IllegalArgumentException {
         if (auctionId == null)
             throw new IllegalArgumentException();
 
@@ -61,7 +59,7 @@ public class BidService {
         double lastBid = allBids.isEmpty() ? auction.getInitialBid() : allBids.getFirst().getAmount();
 
         if (lastBid >= body.amount())
-                throw new AmountTooLowException();
+            throw new AmountTooLowException();
 
         User authUser = new User(sessionManager.getUserId());
 

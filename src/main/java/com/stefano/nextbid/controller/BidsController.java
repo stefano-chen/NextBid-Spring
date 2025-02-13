@@ -1,16 +1,17 @@
 package com.stefano.nextbid.controller;
 
 import com.stefano.nextbid.dto.BidDTO;
-import com.stefano.nextbid.dto.CreateAuctionBody;
 import com.stefano.nextbid.dto.CreateBidBody;
-import com.stefano.nextbid.exceptions.*;
+import com.stefano.nextbid.exceptions.AmountTooLowException;
+import com.stefano.nextbid.exceptions.AuctionClosedException;
+import com.stefano.nextbid.exceptions.InvalidIdException;
+import com.stefano.nextbid.exceptions.NotAuthenticatedException;
 import com.stefano.nextbid.service.BidService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.validation.method.MethodValidationException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,8 +43,8 @@ public class BidsController {
 
     @GetMapping("/api/bids/{id}")
     public ResponseEntity<?> getBidDetailsById(@PathVariable Integer id) {
-        BidDTO response = this.bidService.getBidDetail(id);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        BidDTO bid = this.bidService.getBidDetail(id);
+        return new ResponseEntity<>(bid, HttpStatus.OK);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

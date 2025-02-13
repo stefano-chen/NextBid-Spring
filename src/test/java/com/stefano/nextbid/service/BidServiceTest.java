@@ -12,7 +12,6 @@ import com.stefano.nextbid.exceptions.NotAuthenticatedException;
 import com.stefano.nextbid.repo.AuctionRepository;
 import com.stefano.nextbid.repo.BidRepository;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -71,13 +70,13 @@ class BidServiceTest {
 
     @Test
     void createBidWithNullArgShouldThrow() {
-        assertThrows(IllegalArgumentException.class, () -> bidService.createBid(null,null));
+        assertThrows(IllegalArgumentException.class, () -> bidService.createBid(null, null));
     }
 
     @Test
     void createBidWhileNotAuthenticatedShouldThrow() {
         when(sessionManager.isAuthenticated()).thenReturn(false);
-        assertThrows(NotAuthenticatedException.class, () -> bidService.createBid(1,  new CreateBidBody(10)));
+        assertThrows(NotAuthenticatedException.class, () -> bidService.createBid(1, new CreateBidBody(10)));
     }
 
     @Test

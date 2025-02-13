@@ -2,7 +2,6 @@ package com.stefano.nextbid.controller;
 
 import com.stefano.nextbid.dto.AuctionDTO;
 import com.stefano.nextbid.dto.UserDTO;
-import com.stefano.nextbid.entity.Auction;
 import com.stefano.nextbid.entity.User;
 import com.stefano.nextbid.exceptions.InvalidIdException;
 import com.stefano.nextbid.service.UserService;
@@ -13,15 +12,16 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(UsersController.class)
 class UsersControllerTest {
@@ -41,7 +41,7 @@ class UsersControllerTest {
 
     @Test
     void getUsersWhenThereAreUsersShouldReturnListOfUserDTO() throws Exception {
-        when(userService.getAllUsers("")).thenReturn(List.of(new UserDTO(1,"stefanoss", "stefano", "chen", "bio", Instant.now()),
+        when(userService.getAllUsers("")).thenReturn(List.of(new UserDTO(1, "stefanoss", "stefano", "chen", "bio", Instant.now()),
                 new UserDTO(2, "mario", "mario", "bros", "mario", Instant.now())));
         this.mockMvc.perform(get("/api/users")).andDo(print()).andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].username").value("stefanoss"))
@@ -72,7 +72,7 @@ class UsersControllerTest {
 
     @Test
     void getUserByIdWithValidIdShouldReturnUserDetails() throws Exception {
-        when(userService.getUser(1)).thenReturn(new UserDTO(1,"stefanoss", "stefano", "chen", "bio", Instant.now()));
+        when(userService.getUser(1)).thenReturn(new UserDTO(1, "stefanoss", "stefano", "chen", "bio", Instant.now()));
         this.mockMvc.perform(get("/api/users/1")).andDo(print()).andExpect(status().isOk())
                 .andExpect(jsonPath("$.username").value("stefanoss"));
     }
@@ -90,8 +90,8 @@ class UsersControllerTest {
     @Test
     void getUserAuctionsWithValidIdShouldReturnListOfAuctions() throws Exception {
         User user = new User(1);
-        List<AuctionDTO> auctions = List.of(new AuctionDTO(1, "auction1", "auction",10.0, Instant.now(),Instant.now(), user, null),
-                new AuctionDTO(2, "auction2", "auction", 10.0, Instant.now(), Instant.now(),  user, null));
+        List<AuctionDTO> auctions = List.of(new AuctionDTO(1, "auction1", "auction", 10.0, Instant.now(), Instant.now(), user, null),
+                new AuctionDTO(2, "auction2", "auction", 10.0, Instant.now(), Instant.now(), user, null));
         when(userService.getUserAuctions(1)).thenReturn(auctions);
         this.mockMvc.perform(get("/api/users/1/auctions")).andDo(print()).andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].owner._id").value(1))
@@ -109,8 +109,8 @@ class UsersControllerTest {
     void getUserWonAuctionsWithValidIdShouldReturnListOfAuctions() throws Exception {
         User owner = new User(100);
         User user = new User(1);
-        List<AuctionDTO> auctions = List.of(new AuctionDTO(1,"auction1", "auction",10.0, Instant.now(), Instant.now(), owner, user),
-                new AuctionDTO(2,"auction2", "auction",10.0, Instant.now(), Instant.now(), owner, user));
+        List<AuctionDTO> auctions = List.of(new AuctionDTO(1, "auction1", "auction", 10.0, Instant.now(), Instant.now(), owner, user),
+                new AuctionDTO(2, "auction2", "auction", 10.0, Instant.now(), Instant.now(), owner, user));
         when(userService.getUserWonAuctions(1)).thenReturn(auctions);
         this.mockMvc.perform(get("/api/users/1/auctions/won")).andDo(print()).andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].winner._id").value(1))

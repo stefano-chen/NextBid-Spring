@@ -30,7 +30,7 @@ public class AuctionService {
         this.sessionManager = sessionManager;
     }
 
-    public AuctionDTO createAuction(CreateAuctionBody body) throws IllegalArgumentException, NotAuthenticatedException{
+    public AuctionDTO createAuction(CreateAuctionBody body) throws IllegalArgumentException, NotAuthenticatedException {
         if (body == null)
             throw new IllegalArgumentException();
         if (!sessionManager.isAuthenticated())
@@ -41,7 +41,7 @@ public class AuctionService {
         return auctionMapper.mapToAuctionDTO(savedAuction);
     }
 
-    public List<AuctionDTO> getAllAuctions(String q) throws IllegalArgumentException{
+    public List<AuctionDTO> getAllAuctions(String q) throws IllegalArgumentException {
         if (q == null)
             throw new IllegalArgumentException();
 
@@ -49,11 +49,11 @@ public class AuctionService {
             return auctionRepository.findAllByOrderByCreatedAtDesc().stream().map(auctionMapper::mapToAuctionDTO).toList();
         }
 
-        return auctionRepository.findAllByTitleContainingIgnoreCaseOrDescriptionContainingIgnoreCase(q,q)
+        return auctionRepository.findAllByTitleContainingIgnoreCaseOrDescriptionContainingIgnoreCase(q, q)
                 .stream().map(auctionMapper::mapToAuctionDTO).toList();
     }
 
-    public AuctionDTO getAuctionById(Integer id) throws InvalidIdException{
+    public AuctionDTO getAuctionById(Integer id) throws InvalidIdException {
         if (id == null)
             throw new InvalidIdException();
 
@@ -62,7 +62,7 @@ public class AuctionService {
         return auctionMapper.mapToAuctionDTO(auction);
     }
 
-    public void updateAuctionById(Integer id, UpdateAuctionBody body) throws IllegalArgumentException, NotAuthenticatedException, InvalidIdException, NotAuthorizedException{
+    public void updateAuctionById(Integer id, UpdateAuctionBody body) throws IllegalArgumentException, NotAuthenticatedException, InvalidIdException, NotAuthorizedException {
 
         if (body == null || id == null)
             throw new IllegalArgumentException();

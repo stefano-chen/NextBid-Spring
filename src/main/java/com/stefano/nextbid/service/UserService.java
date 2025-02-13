@@ -2,13 +2,11 @@ package com.stefano.nextbid.service;
 
 import com.stefano.nextbid.dto.AuctionDTO;
 import com.stefano.nextbid.dto.UserDTO;
-import com.stefano.nextbid.entity.Auction;
 import com.stefano.nextbid.entity.User;
 import com.stefano.nextbid.exceptions.InvalidIdException;
 import com.stefano.nextbid.exceptions.NotAuthenticatedException;
 import com.stefano.nextbid.repo.AuctionRepository;
 import com.stefano.nextbid.repo.UserRepository;
-import org.aspectj.weaver.ast.Not;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -53,7 +51,7 @@ public class UserService {
         return userMapper.mapToUserDTO(user);
     }
 
-    public void updateBio(String bio) throws NotAuthenticatedException, IllegalArgumentException, InvalidIdException{
+    public void updateBio(String bio) throws NotAuthenticatedException, IllegalArgumentException, InvalidIdException {
         if (bio == null)
             throw new IllegalArgumentException();
         if (!sessionManager.isAuthenticated())
