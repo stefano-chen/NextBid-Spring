@@ -34,7 +34,7 @@ class UtilsControllerTest {
         when(sessionManager.isAuthenticated()).thenReturn(true);
         when(sessionManager.getUserId()).thenReturn(1);
         User user = new User("stefanoss", "stefano", "chen", "bio", "hello");
-        user.setId(1);
+        user.set_id(1);
         when(userRepository.findById(1)).thenReturn(Optional.of(user));
 
         this.mockMvc.perform(get("/api/whoami")).andDo(print()).andExpect(status().isOk())

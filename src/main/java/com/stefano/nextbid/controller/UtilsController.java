@@ -33,6 +33,6 @@ public class UtilsController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         User user = userRepository.findById(sessionManager.getUserId()).get();
-        return new ResponseEntity<>(Map.of("_id", user.getId(), "username", user.getUsername()), HttpStatus.OK);
+        return new ResponseEntity<>(Map.of("_id", user.get_id(), "username", user.getUsername()), HttpStatus.OK);
     }
 }

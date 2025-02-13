@@ -93,8 +93,8 @@ class UsersControllerTest {
                 new Auction("auction2", "auction", Instant.now(), 10.0, user, null));
         when(userService.getUserAuctions(1)).thenReturn(auctions);
         this.mockMvc.perform(get("/api/users/1/auctions")).andDo(print()).andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].owner.id").value(1))
-                .andExpect(jsonPath("$[1].owner.id").value(1));
+                .andExpect(jsonPath("$[0].owner._id").value(1))
+                .andExpect(jsonPath("$[1].owner._id").value(1));
     }
 
     @Test
@@ -112,8 +112,8 @@ class UsersControllerTest {
                 new Auction("auction2", "auction", Instant.now(), 10.0, owner, user));
         when(userService.getUserWonAuctions(1)).thenReturn(auctions);
         this.mockMvc.perform(get("/api/users/1/auctions/won")).andDo(print()).andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].winner.id").value(1))
-                .andExpect(jsonPath("$[1].winner.id").value(1));
+                .andExpect(jsonPath("$[0].winner._id").value(1))
+                .andExpect(jsonPath("$[1].winner._id").value(1));
     }
 
     @Test

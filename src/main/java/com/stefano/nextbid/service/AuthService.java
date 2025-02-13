@@ -3,7 +3,6 @@ package com.stefano.nextbid.service;
 import com.password4j.BcryptFunction;
 import com.password4j.Hash;
 import com.password4j.Password;
-import com.stefano.nextbid.dto.AuctionDTO;
 import com.stefano.nextbid.dto.SigninBody;
 import com.stefano.nextbid.dto.SignupBody;
 import com.stefano.nextbid.dto.UserDTO;
@@ -13,8 +12,6 @@ import com.stefano.nextbid.exceptions.UsernameAlreadyExistsException;
 import com.stefano.nextbid.repo.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class AuthService {
@@ -44,7 +41,7 @@ public class AuthService {
         Hash hash = Password.hash(user.getPassword()).with(bcryptFunction);
         user.setPassword(hash.getResult());
         User savedUser = userRepository.save(user);
-        sessionManager.setUserId(savedUser.getId());
+        sessionManager.setUserId(savedUser.get_id());
         return userMapper.mapToUserDTO(savedUser);
     }
 
@@ -53,7 +50,7 @@ public class AuthService {
         if (!(Password.check(body.password(), user.getPassword()).with(bcryptFunction))) {
             throw new InvalidCredentialsException();
         }
-        sessionManager.setUserId(user.getId());
+        sessionManager.setUserId(user.get_id());
         return userMapper.mapToUserDTO(user);
     }
 

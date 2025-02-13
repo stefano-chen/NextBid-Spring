@@ -47,7 +47,7 @@ class AuthServiceTest {
         User user = new User("stefanoss", "stefano", "chen", "", "body");
         UserDTO userDTO = new UserDTO(1, "stefanoss", "stefano", "chen", "", Instant.now());
         when(userMapper.mapToUser(body)).thenReturn(user);
-        user.setId(1);
+        user.set_id(1);
         when(userRepository.findUserByUsername(user.getUsername())).thenReturn(Optional.empty());
         when(userRepository.save(user)).thenReturn(user);
         when(userMapper.mapToUserDTO(user)).thenReturn(userDTO);
@@ -66,7 +66,7 @@ class AuthServiceTest {
         User user = new User("stefanoss", "stefano", "chen", "", "body");
         UserDTO userDTO = new UserDTO(1, "stefanoss", "stefano", "chen", "", Instant.now());
         when(userMapper.mapToUser(body)).thenReturn(user);
-        user.setId(1);
+        user.set_id(1);
         when(userRepository.findUserByUsername(user.getUsername())).thenReturn(Optional.of(user));
         when(userRepository.save(user)).thenReturn(user);
         when(userMapper.mapToUserDTO(user)).thenReturn(userDTO);
