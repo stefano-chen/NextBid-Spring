@@ -13,8 +13,8 @@ The technologies used in this project are:
 
 # How to run
 
-Go to the [latest releases page](https://github.com/stefano-chen/NextBid-Spring/releases/latest) and click on `Assets` at the bottom to show the files available in the release.
-Download the nextbid-[version].zip and extract it.\
+Go to the [latest releases page](https://github.com/stefano-chen/NextBid-Spring/releases/latest) and click on `Assets` at the bottom to show the files available in the release.\
+Download the `nextbid-[version].zip` and extract it.\
 The unzipped folder has the following structure:
 
 ```
