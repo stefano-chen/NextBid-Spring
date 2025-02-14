@@ -98,22 +98,22 @@ The project will consist of two parts:
 
 # REST Interface
 
-| Method | API                          | Description                                                             |
-|--------|------------------------------|------------------------------------------------------------------------|
-| POST   | /api/auth/signup             | SignUp a new user                                                      |
-| POST   | /api/auth/signin             | Login                                                                  |
-| GET    | /api/auth/logout             | Logout                                                                 |
-| GET    | /api/users/?q=query          | List of all users, filtering using a query                             |
-| GET    | /api/users/{id}              | User's details with the given id                                       |
-| GET    | /api/users/{id}/auctions     | List of all auctions created by a user                                 |
-| GET    | /api/users/{id}/auctions/won | List of all auctions won by a user                                     |
-| POST   | /api/users/bio               | Modify user's bio                                                      |
-| GET    | /api/auctions/?q=query       | List of all auctions, filtering using a query                          |
-| POST   | /api/auctions                | Create a new auction (only authenticated users)                        |
-| GET    | /api/auctions/{id}           | Auction's details with the given id                                    |
-| PUT    | /api/auctions/{id}           | Modify auction's detail (only the auction's owner)                     |
-| DELETE | /api/auctions/{id}           | Delete the auction (only the auction's owner)                          |
-| GET    | /api/auctions/{id}/bids      | List of all bid for an auction with given id                           |
-| POST   | /api/auctions/{id}/bids      | Make a new bid for an auction with given id (only authenticated users) |
-| GET    | /api/bids/{id}               | Bid's details with the given id                                        |
-| GET    | /api/whoami                  | if the user is authenticated, it returns the user's detail             |
+| Method | API                             | Description                                                            |
+|--------|---------------------------------|------------------------------------------------------------------------|
+| POST   | /api/auth/signup                | SignUp a new user                                                      |
+| POST   | /api/auth/signin                | Login                                                                  |
+| GET    | /api/auth/logout                | Logout                                                                 |
+| GET    | /api/users/?q=query             | List of all users, filtering using a query                             |
+| GET    | /api/users/{id}                 | User's details with the given id                                       |
+| GET    | /api/users/{id}/auctions        | List of all auctions created by a user                                 |
+| GET    | /api/users/{id}/auctions/won    | List of all auctions won by a user                                     |
+| PUT    | /api/users/bio                  | Modify user's bio                                                      |
+| GET    | /api/auctions/?q=query          | List of all auctions, filtering using a query                          |
+| POST   | /api/auctions                   | Create a new auction (only authenticated users)                        |
+| GET    | /api/auctions/{id}              | Auction's details with the given id                                    |
+| PUT    | /api/auctions/{id}              | Modify auction's detail (only the auction's owner)                     |
+| DELETE | /api/auctions/{id}              | Delete the auction (only the auction's owner)                          |
+| GET    | /api/auctions/{id}/bids         | List of all bid for an auction with given id                           |
+| POST   | /api/auctions/{id}/bids         | Make a new bid for an auction with given id (only authenticated users) |
+| GET    | /api/bids/{id}                  | Bid's details with the given id                                        |
+| GET    | /api/whoami                     | if the user is authenticated, it returns the user's detail             |
