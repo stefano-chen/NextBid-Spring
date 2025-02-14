@@ -20,7 +20,7 @@ The unzipped folder has the following structure:
 ```
 .
 ├───/database
-│       └───/data    //This folder will be used to store MongoDB`s data persistently.
+│       └───/data    //This folder will be used to store MySQL`s data persistently.
 │
 ├───/server
 │    ├───Dockerfile
