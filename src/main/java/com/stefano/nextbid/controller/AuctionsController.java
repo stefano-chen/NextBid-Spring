@@ -30,30 +30,35 @@ public class AuctionsController {
         this.auctionService = auctionService;
     }
 
+    // Endpoint for creating an auction
     @PostMapping("")
     public ResponseEntity<?> createAuction(@Valid @RequestBody CreateAuctionBody body) {
         AuctionDTO createdAuction = this.auctionService.createAuction(body);
         return new ResponseEntity<>(createdAuction, HttpStatus.OK);
     }
 
+    // Endpoint for getting a list of auctions that matches a query q
     @GetMapping("")
     public ResponseEntity<?> getAllAuctionsFilterByQuery(@RequestParam(value = "q", defaultValue = "", required = false) String q) {
         List<AuctionDTO> auctions = this.auctionService.getAllAuctions(q);
         return new ResponseEntity<>(auctions, HttpStatus.OK);
     }
 
+    // Endpoint for getting the details of an auction identified by a given id
     @GetMapping("/{id}")
     public ResponseEntity<?> getAuctionDetailById(@PathVariable Integer id) {
         AuctionDTO auction = this.auctionService.getAuctionById(id);
         return new ResponseEntity<>(auction, HttpStatus.OK);
     }
 
+    // Endpoint for updating some details of an auction identified by a given id
     @PutMapping("/{id}")
     public ResponseEntity<?> updateAuctionById(@PathVariable Integer id, @RequestBody UpdateAuctionBody body) {
         this.auctionService.updateAuctionById(id, body);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    // Endpoint for deleting an auction identified by a given id
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteAuctionById(@PathVariable Integer id) {
         this.auctionService.deleteAuctionById(id);

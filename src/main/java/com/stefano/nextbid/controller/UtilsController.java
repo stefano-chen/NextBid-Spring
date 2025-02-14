@@ -26,7 +26,7 @@ public class UtilsController {
         this.userRepository = userRepository;
     }
 
-
+    // Endpoint for checking if this session is authenticated
     @GetMapping("/whoami")
     public ResponseEntity<?> whoami() {
         if (!sessionManager.isAuthenticated()) {

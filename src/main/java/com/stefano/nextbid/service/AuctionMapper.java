@@ -6,6 +6,7 @@ import com.stefano.nextbid.entity.Auction;
 import com.stefano.nextbid.entity.User;
 import org.springframework.stereotype.Service;
 
+// A mapper is introduced to create independence between the internal representation of an entity and the response representation
 @Service
 public class AuctionMapper {
     public Auction mapToAuction(CreateAuctionBody body, User owner) {

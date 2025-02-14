@@ -4,6 +4,7 @@ import com.stefano.nextbid.dto.BidDTO;
 import com.stefano.nextbid.entity.Bid;
 import org.springframework.stereotype.Service;
 
+// A mapper is introduced to create independence between the internal representation of an entity and the response representation
 @Service
 public class BidMapper {
 

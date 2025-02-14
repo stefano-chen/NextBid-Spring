@@ -29,18 +29,21 @@ public class BidsController {
         this.bidService = bidService;
     }
 
+    // Endpoint for getting all bids for an auction identified by a given id
     @GetMapping("/api/auctions/{id}/bids")
     public ResponseEntity<?> getAllBidsForAuctionById(@PathVariable Integer id) {
         List<BidDTO> bids = this.bidService.findByAuctionId(id);
         return new ResponseEntity<>(bids, HttpStatus.OK);
     }
 
+    // Endpoint for creating a bid for an auction identified by a given id
     @PostMapping("/api/auctions/{id}/bids")
     public ResponseEntity<?> createBidForAuctionById(@PathVariable Integer id, @Valid @RequestBody CreateBidBody body) {
         this.bidService.createBid(id, body);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    // Endpoint for getting the detail's of a bid identified by a given id
     @GetMapping("/api/bids/{id}")
     public ResponseEntity<?> getBidDetailsById(@PathVariable Integer id) {
         BidDTO bid = this.bidService.getBidDetail(id);

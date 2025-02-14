@@ -24,30 +24,35 @@ public class UsersController {
         this.userService = userService;
     }
 
+    // Endpoint for getting a list of users that matches a query q
     @GetMapping("")
     public ResponseEntity<?> getAllUsersFilterByQuery(@RequestParam(value = "q", defaultValue = "", required = false) String q) {
         List<UserDTO> users = userService.getAllUsers(q);
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
+    // Endpoint for getting a user's detail, identified by a given id
     @GetMapping("/{id}")
     public ResponseEntity<?> getUserDetailById(@PathVariable Integer id) {
         UserDTO user = userService.getUser(id);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
+    // Endpoint for getting the list of all auctions created by a user, identified by a given id
     @GetMapping("/{id}/auctions")
     public ResponseEntity<?> getUserAuctions(@PathVariable Integer id) {
         List<AuctionDTO> auctionList = userService.getUserAuctions(id);
         return new ResponseEntity<>(auctionList, HttpStatus.OK);
     }
 
+    // Endpoint for getting the list of all won auctions created by a user, identified by a given id
     @GetMapping("/{id}/auctions/won")
     public ResponseEntity<?> getUserWonAuctions(@PathVariable Integer id) {
         List<AuctionDTO> auctionList = userService.getUserWonAuctions(id);
         return new ResponseEntity<>(auctionList, HttpStatus.OK);
     }
 
+    //Endpoint for updating the authenticated user bio
     @PutMapping("/bio")
     public ResponseEntity<?> updateUserBio(@RequestBody String body) {
         userService.updateBio(body);

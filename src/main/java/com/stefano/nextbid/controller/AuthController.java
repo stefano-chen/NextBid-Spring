@@ -26,18 +26,21 @@ public class AuthController {
         this.authService = service;
     }
 
+    // Endpoint for a user's signup
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@Valid @RequestBody SignupBody body) {
         UserDTO user = this.authService.signup(body);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
+    // Endpoint for a user's signin
     @PostMapping("/signin")
     public ResponseEntity<?> signin(@Valid @RequestBody SigninBody body) {
         UserDTO user = this.authService.signin(body);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
+    // Endpoint for invalidate a session a.k.a. logout
     @GetMapping("/logout")
     public ResponseEntity<?> logout() {
         authService.logout();

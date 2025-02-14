@@ -10,6 +10,7 @@ import java.io.IOException;
 @RestController
 public class WhitelabelController implements ErrorController {
 
+    // Redirect all not implemented routes, to the frontend
     @RequestMapping("/error")
     public void redirect(HttpServletResponse response) throws IOException {
         response.sendRedirect("/");
