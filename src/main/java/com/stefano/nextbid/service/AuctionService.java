@@ -36,8 +36,8 @@ public class AuctionService {
         if (!sessionManager.isAuthenticated())
             throw new NotAuthenticatedException();
         User owner = new User(sessionManager.getUserId());
-        Auction auction = auctionMapper.mapToAuction(body, owner);
-        Auction savedAuction = auctionRepository.save(auction);
+        Auction mappedAuction = auctionMapper.mapToAuction(body, owner);
+        Auction savedAuction = auctionRepository.save(mappedAuction);
         return auctionMapper.mapToAuctionDTO(savedAuction);
     }
 

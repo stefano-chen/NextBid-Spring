@@ -11,6 +11,7 @@ import com.stefano.nextbid.exceptions.InvalidIdException;
 import com.stefano.nextbid.exceptions.NotAuthenticatedException;
 import com.stefano.nextbid.repo.AuctionRepository;
 import com.stefano.nextbid.repo.BidRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -42,6 +43,7 @@ public class BidService {
                 .map(bidMapper::mapToBidDTO).toList();
     }
 
+    @Transactional
     public void createBid(Integer auctionId, CreateBidBody body) throws IllegalArgumentException, NotAuthenticatedException, AuctionClosedException, AmountTooLowException, InvalidIdException {
         if (auctionId == null || body == null)
             throw new IllegalArgumentException();
@@ -67,7 +69,6 @@ public class BidService {
 
         auctionRepository.save(auction);
         bidRepository.save(new Bid(authUser, new Auction(auctionId), body.amount()));
-
     }
 
     public BidDTO getBidDetail(Integer id) {

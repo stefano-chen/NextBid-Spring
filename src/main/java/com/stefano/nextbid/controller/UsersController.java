@@ -41,15 +41,15 @@ public class UsersController {
     // Endpoint for getting the list of all auctions created by a user, identified by a given id
     @GetMapping("/{id}/auctions")
     public ResponseEntity<?> getUserAuctions(@PathVariable Integer id) {
-        List<AuctionDTO> auctionList = userService.getUserAuctions(id);
-        return new ResponseEntity<>(auctionList, HttpStatus.OK);
+        List<AuctionDTO> userAuctions = userService.getUserAuctions(id);
+        return new ResponseEntity<>(userAuctions, HttpStatus.OK);
     }
 
     // Endpoint for getting the list of all won auctions created by a user, identified by a given id
     @GetMapping("/{id}/auctions/won")
     public ResponseEntity<?> getUserWonAuctions(@PathVariable Integer id) {
-        List<AuctionDTO> auctionList = userService.getUserWonAuctions(id);
-        return new ResponseEntity<>(auctionList, HttpStatus.OK);
+        List<AuctionDTO> userWonAuctions = userService.getUserWonAuctions(id);
+        return new ResponseEntity<>(userWonAuctions, HttpStatus.OK);
     }
 
     //Endpoint for updating the authenticated user bio

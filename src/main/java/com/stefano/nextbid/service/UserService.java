@@ -56,8 +56,8 @@ public class UserService {
             throw new IllegalArgumentException();
         if (!sessionManager.isAuthenticated())
             throw new NotAuthenticatedException();
-        Integer userId = sessionManager.getUserId();
-        User user = userRepository.findById(userId).orElseThrow(InvalidIdException::new);
+        Integer authUserId = sessionManager.getUserId();
+        User user = userRepository.findById(authUserId).orElseThrow(InvalidIdException::new);
         user.setBio(bio);
         userRepository.save(user);
     }
