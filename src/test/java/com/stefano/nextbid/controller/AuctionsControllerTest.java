@@ -27,27 +27,24 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(AuctionsController.class)
 class AuctionsControllerTest {
-
     @Autowired
     private MockMvc mockMvc;
-
     @MockitoBean
     private AuctionService auctionService;
-
 
     @Test
     void createAuctionWithEmptyDataShouldFail() throws Exception {
         String body = "{}";
-        this.mockMvc.perform(post("/api/auctions").content(body).contentType("application/json")).andDo(print()).andExpect(status().isBadRequest());
+        this.mockMvc.perform(post("/api/auctions").content(body).contentType("application/json"))
+                .andDo(print()).andExpect(status().isBadRequest());
     }
-
 
     @Test
     void createAuctionWithMissingDataShouldFail() throws Exception {
         String body = "{\"title\":\"auction\"}";
-        this.mockMvc.perform(post("/api/auctions").content(body).contentType("application/json")).andDo(print()).andExpect(status().isBadRequest());
+        this.mockMvc.perform(post("/api/auctions").content(body).contentType("application/json"))
+                .andDo(print()).andExpect(status().isBadRequest());
     }
-
 
     @Test
     void createAuctionWithValidDataShouldSuccess() throws Exception {
@@ -57,25 +54,40 @@ class AuctionsControllerTest {
                 "\"initialBid\": 10.0," +
                 "\"dueDate\":\"3026-07-20T13:05:30.00Z\"" +
                 "}";
-        CreateAuctionBody auctionBody = new CreateAuctionBody("auction", "description", 10.0, Instant.parse("3026-07-20T13:05:30.00Z"));
-        AuctionDTO createdAuction = new AuctionDTO(1, "auction", "description", 10.0, Instant.parse("3026-07-20T13:05:30.00Z"), Instant.now(), new User(1), null);
+        CreateAuctionBody auctionBody = new CreateAuctionBody(
+                "auction", "description", 10.0, Instant.parse("3026-07-20T13:05:30.00Z")
+        );
+        AuctionDTO createdAuction = new AuctionDTO(
+                1, "auction", "description", 10.0,
+                Instant.parse("3026-07-20T13:05:30.00Z"), Instant.now(), new User(1), null
+        );
         when(auctionService.createAuction(auctionBody)).thenReturn(createdAuction);
-        this.mockMvc.perform(post("/api/auctions").content(body).contentType("application/json")).andDo(print()).andExpect(status().isOk());
+        this.mockMvc.perform(post("/api/auctions").content(body).contentType("application/json"))
+                .andDo(print()).andExpect(status().isOk());
     }
 
     @Test
     void getAllAuctionsWhenThereAreNoAuctionsShouldReturnEmptyList() throws Exception {
-        assertTrue(this.mockMvc.perform(get("/api/auctions")).andDo(print()).andExpect(status().isOk()).andReturn().getResponse().getContentAsString().equals("[]"));
+        assertTrue(
+                this.mockMvc.perform(get("/api/auctions"))
+                        .andDo(print()).andExpect(status().isOk())
+                        .andReturn().getResponse().getContentAsString().equals("[]")
+        );
     }
 
     @Test
     void getAllAuctionsWhenThereAreAuctionsShouldReturnList() throws Exception {
-
-        List<AuctionDTO> auctions = List.of(new AuctionDTO(1, "title1", "description1", 10.0, Instant.now().plus(1, ChronoUnit.DAYS), Instant.now(), new User(1), null),
-                new AuctionDTO(2, "title2", "description2", 10.0, Instant.now().plus(1, ChronoUnit.DAYS), Instant.now(), new User(2), null));
-
+        List<AuctionDTO> auctions = List.of(
+                new AuctionDTO(
+                        1, "title1", "description1", 10.0,
+                        Instant.now().plus(1, ChronoUnit.DAYS), Instant.now(), new User(1), null
+                ),
+                new AuctionDTO(
+                        2, "title2", "description2", 10.0,
+                        Instant.now().plus(1, ChronoUnit.DAYS), Instant.now(), new User(2), null
+                )
+        );
         when(auctionService.getAllAuctions("")).thenReturn(auctions);
-
         this.mockMvc.perform(get("/api/auctions")).andDo(print()).andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].title").value("title1"))
                 .andExpect(jsonPath("$[1].title").value("title2"));
@@ -83,23 +95,36 @@ class AuctionsControllerTest {
 
     @Test
     void getAllAuctionsWhenThereAreNoMatchShouldReturnEmptyList() throws Exception {
-
-        List<AuctionDTO> auctions = List.of(new AuctionDTO(1, "title1", "description1", 10.0, Instant.now().plus(1, ChronoUnit.DAYS), Instant.now(), new User(1), null),
-                new AuctionDTO(2, "title2", "description2", 10.0, Instant.now().plus(1, ChronoUnit.DAYS), Instant.now(), new User(2), null));
-
+        List<AuctionDTO> auctions = List.of(
+                new AuctionDTO(
+                        1, "title1", "description1", 10.0,
+                        Instant.now().plus(1, ChronoUnit.DAYS), Instant.now(), new User(1), null
+                ),
+                new AuctionDTO(
+                        2, "title2", "description2", 10.0,
+                        Instant.now().plus(1, ChronoUnit.DAYS), Instant.now(), new User(2), null
+                )
+        );
         when(auctionService.getAllAuctions("title3")).thenReturn(List.of());
-
-        assertTrue(this.mockMvc.perform(get("/api/auctions?q=title3")).andDo(print()).andExpect(status().isOk()).andReturn().getResponse().getContentAsString().equals("[]"));
+        assertTrue(
+                this.mockMvc.perform(get("/api/auctions?q=title3")).andDo(print()).andExpect(status().isOk())
+                        .andReturn().getResponse().getContentAsString().equals("[]")
+        );
     }
 
     @Test
     void getAllAuctionsWhenThereAreMatchShouldReturnList() throws Exception {
-
-        List<AuctionDTO> auctions = List.of(new AuctionDTO(1, "title1", "description1", 10.0, Instant.now().plus(1, ChronoUnit.DAYS), Instant.now(), new User(1), null),
-                new AuctionDTO(2, "title2", "description2", 10.0, Instant.now().plus(1, ChronoUnit.DAYS), Instant.now(), new User(2), null));
-
+        List<AuctionDTO> auctions = List.of(
+                new AuctionDTO(
+                        1, "title1", "description1", 10.0,
+                        Instant.now().plus(1, ChronoUnit.DAYS), Instant.now(), new User(1), null
+                ),
+                new AuctionDTO(
+                        2, "title2", "description2", 10.0,
+                        Instant.now().plus(1, ChronoUnit.DAYS), Instant.now(), new User(2), null
+                )
+        );
         when(auctionService.getAllAuctions("title1")).thenReturn(auctions.subList(0, 1));
-
         this.mockMvc.perform(get("/api/auctions?q=title1")).andDo(print()).andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].title").value("title1"))
                 .andExpect(jsonPath("$[1]").doesNotExist());
@@ -107,11 +132,11 @@ class AuctionsControllerTest {
 
     @Test
     void getAuctionByIdWithValidIdShouldReturnAuctionDetails() throws Exception {
-
-        AuctionDTO auction = new AuctionDTO(1, "title", "description", 10.0, Instant.now().plus(1, ChronoUnit.DAYS), Instant.now(), new User(1), null);
-
+        AuctionDTO auction = new AuctionDTO(
+                1, "title", "description", 10.0,
+                Instant.now().plus(1, ChronoUnit.DAYS), Instant.now(), new User(1), null
+        );
         when(auctionService.getAuctionById(1)).thenReturn(auction);
-
         this.mockMvc.perform(get("/api/auctions/1")).andDo(print()).andExpect(status().isOk())
                 .andExpect(jsonPath("$._id").value(1));
     }
@@ -128,7 +153,8 @@ class AuctionsControllerTest {
                 "\"title\":\"new title\"," +
                 "\"description\":\"new desc\"" +
                 "}";
-        this.mockMvc.perform(put("/api/auctions/1").content(body).contentType("application/json")).andDo(print()).andExpect(status().isOk());
+        this.mockMvc.perform(put("/api/auctions/1").content(body).contentType("application/json"))
+                .andDo(print()).andExpect(status().isOk());
     }
 
     @Test
@@ -137,10 +163,9 @@ class AuctionsControllerTest {
                 "\"title\":\"new title\"," +
                 "\"description\":\"new desc\"" +
                 "}";
-
         doThrow(new InvalidIdException()).when(auctionService).updateAuctionById(any(), any());
-
-        this.mockMvc.perform(put("/api/auctions/19090").content(body).contentType("application/json")).andDo(print()).andExpect(status().isBadRequest());
+        this.mockMvc.perform(put("/api/auctions/19090").content(body).contentType("application/json"))
+                .andDo(print()).andExpect(status().isBadRequest());
     }
 
     @Test
@@ -150,12 +175,10 @@ class AuctionsControllerTest {
 
     @Test
     void deleteAuctionByIdWithInvalidIdShouldFail() throws Exception {
-
         Integer id = 91029;
-
         doThrow(new InvalidIdException()).when(auctionService).deleteAuctionById(id);
-
-        this.mockMvc.perform(delete("/api/auctions/91029")).andDo(print()).andExpect(status().isBadRequest());
+        this.mockMvc.perform(delete("/api/auctions/91029")).andDo(print())
+                .andExpect(status().isBadRequest());
     }
 
 }

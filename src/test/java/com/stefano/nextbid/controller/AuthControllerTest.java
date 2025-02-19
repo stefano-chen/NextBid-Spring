@@ -20,24 +20,23 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(AuthController.class)
 class AuthControllerTest {
-
     @Autowired
     private MockMvc mockMvc;
-
     @MockitoBean
     private AuthService authService;
-
 
     @Test
     void signupWithEmptyBodyShouldFail() throws Exception {
         String body = "{}";
-        this.mockMvc.perform(post("/api/auth/signup").content(body).contentType("application/json")).andDo(print()).andExpect(status().isBadRequest());
+        this.mockMvc.perform(post("/api/auth/signup").content(body).contentType("application/json"))
+                .andDo(print()).andExpect(status().isBadRequest());
     }
 
     @Test
     void signupWithMissingDataShouldFail() throws Exception {
         String body = "{\"name\":\"stefano\"}";
-        this.mockMvc.perform(post("/api/auth/signup").content(body).contentType("application/json")).andDo(print()).andExpect(status().isBadRequest());
+        this.mockMvc.perform(post("/api/auth/signup").content(body).contentType("application/json"))
+                .andDo(print()).andExpect(status().isBadRequest());
     }
 
     @Test
@@ -48,12 +47,14 @@ class AuthControllerTest {
                 "\"username\":\"stefano\"," +
                 "\"password\":\"stefano\"" +
                 "}";
-
-        SignupBody signupBody = new SignupBody("stefano", "stefano", "stefano", "stefano");
-
-        when(authService.signup(signupBody)).thenReturn(new UserDTO(1, "stefano", "stefano", "stefano", "", Instant.now()));
-
-        this.mockMvc.perform(post("/api/auth/signup").content(body).contentType("application/json")).andDo(print()).andExpect(status().isOk())
+        SignupBody signupBody = new SignupBody(
+                "stefano", "stefano", "stefano", "stefano"
+        );
+        when(authService.signup(signupBody)).thenReturn(
+                new UserDTO(1, "stefano", "stefano", "stefano", "", Instant.now())
+        );
+        this.mockMvc.perform(post("/api/auth/signup").content(body).contentType("application/json"))
+                .andDo(print()).andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value("stefano"))
                 .andExpect(jsonPath("$.surname").value("stefano"))
                 .andExpect(jsonPath("$.username").value("stefano"))
@@ -64,13 +65,15 @@ class AuthControllerTest {
     @Test
     void signinWithEmptyBodyShouldFail() throws Exception {
         String body = "{}";
-        this.mockMvc.perform(post("/api/auth/signin").content(body).contentType("application/json")).andDo(print()).andExpect(status().isBadRequest());
+        this.mockMvc.perform(post("/api/auth/signin").content(body).contentType("application/json"))
+                .andDo(print()).andExpect(status().isBadRequest());
     }
 
     @Test
     void signinWithMissingDataShouldFail() throws Exception {
         String body = "{\"name\":\"stefano\"}";
-        this.mockMvc.perform(post("/api/auth/signup").content(body).contentType("application/json")).andDo(print()).andExpect(status().isBadRequest());
+        this.mockMvc.perform(post("/api/auth/signup").content(body).contentType("application/json"))
+                .andDo(print()).andExpect(status().isBadRequest());
     }
 
     @Test
@@ -79,17 +82,16 @@ class AuthControllerTest {
                 "\"username\":\"stefano\"," +
                 "\"password\":\"stefano\"" +
                 "}";
-
         SigninBody signinBody = new SigninBody("stefano", "stefano");
-
-        when(authService.signin(signinBody)).thenReturn(new UserDTO(1, "stefano", "stefano", "stefano", "", Instant.now()));
-
-        this.mockMvc.perform(post("/api/auth/signin").content(body).contentType("application/json")).andDo(print()).andExpect(status().isOk())
+        when(authService.signin(signinBody)).thenReturn(
+                new UserDTO(1, "stefano", "stefano", "stefano", "", Instant.now())
+        );
+        this.mockMvc.perform(post("/api/auth/signin").content(body).contentType("application/json"))
+                .andDo(print()).andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value("stefano"))
                 .andExpect(jsonPath("$.surname").value("stefano"))
                 .andExpect(jsonPath("$.username").value("stefano"))
                 .andExpect(jsonPath("$.password").doesNotExist());
-        ;
         verify(authService, times(1)).signin(signinBody);
     }
 }

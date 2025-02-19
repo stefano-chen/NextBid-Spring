@@ -21,7 +21,6 @@ import java.util.Map;
 
 @RestController
 public class BidsController {
-
     private final BidService bidService;
 
     @Autowired
@@ -53,9 +52,7 @@ public class BidsController {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<?> handleInvalidData(MethodArgumentNotValidException e) {
         List<String> errors = new ArrayList<>();
-
         e.getBindingResult().getAllErrors().forEach(error -> errors.add(error.getDefaultMessage()));
-
         return new ResponseEntity<>(Map.of("error", errors), HttpStatus.BAD_REQUEST);
     }
 

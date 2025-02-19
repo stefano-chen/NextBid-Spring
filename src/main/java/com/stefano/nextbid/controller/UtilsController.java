@@ -15,9 +15,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api")
 public class UtilsController {
-
     private final SessionManager sessionManager;
-
     private final UserRepository userRepository;
 
     @Autowired

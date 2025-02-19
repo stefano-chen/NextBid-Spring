@@ -9,7 +9,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 class UserMapperTest {
-
     private final UserMapper userMapper = new UserMapper();
 
     @Test
@@ -21,7 +20,6 @@ class UserMapperTest {
     void mapToUserWithValidArgShouldReturnValidUser() {
         SignupBody body = new SignupBody("stefano", "chen", "stefanoss", "password");
         User mappedUser = userMapper.mapToUser(body);
-
         assertEquals("stefano", mappedUser.getName());
         assertEquals("chen", mappedUser.getSurname());
         assertEquals("stefanoss", mappedUser.getUsername());
@@ -37,7 +35,6 @@ class UserMapperTest {
     void mapToUserDTOWithValidArgShouldReturnValidUserDTO() {
         User user = new User("stefanoss", "stefano", "chen", "bio", "password");
         UserDTO mappedUser = userMapper.mapToUserDTO(user);
-
         assertEquals("stefanoss", mappedUser.username());
         assertEquals("stefano", mappedUser.name());
         assertEquals("chen", mappedUser.surname());

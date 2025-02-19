@@ -19,13 +19,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(UtilsController.class)
 class UtilsControllerTest {
-
     @Autowired
     private MockMvc mockMvc;
-
     @MockitoBean
     private SessionManager sessionManager;
-
     @MockitoBean
     private UserRepository userRepository;
 
@@ -36,7 +33,6 @@ class UtilsControllerTest {
         User user = new User("stefanoss", "stefano", "chen", "bio", "hello");
         user.set_id(1);
         when(userRepository.findById(1)).thenReturn(Optional.of(user));
-
         this.mockMvc.perform(get("/api/whoami")).andDo(print()).andExpect(status().isOk())
                 .andExpect(jsonPath("$._id").value(1))
                 .andExpect(jsonPath("$.username").value("stefanoss"));

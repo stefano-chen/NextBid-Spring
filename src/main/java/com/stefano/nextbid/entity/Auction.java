@@ -10,35 +10,26 @@ import java.time.Instant;
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "auctions")
 public class Auction {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
     @Column(nullable = false)
     private String title;
-
     @Column(nullable = false)
     private String description;
-
     @Column(nullable = false)
     private Instant dueDate;
-
     @Column(nullable = false)
     private double initialBid;
-
     @ManyToOne
     @JoinColumn(name = "ownerId", nullable = false)
     private User owner;
-
     @OneToOne
     @JoinColumn(name = "winnerId", nullable = true)
     private User winner;
-
     @CreatedDate
     @Column(nullable = false, updatable = false)
     private Instant createdAt;
-
     @Version
     private int version;
 

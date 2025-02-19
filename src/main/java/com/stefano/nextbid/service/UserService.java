@@ -14,13 +14,9 @@ import java.util.List;
 
 @Service
 public class UserService {
-
     private final UserRepository userRepository;
-
     private final AuctionRepository auctionRepository;
-
     private final UserMapper userMapper;
-
     private final SessionManager sessionManager;
     private final AuctionMapper auctionMapper;
 
@@ -65,7 +61,6 @@ public class UserService {
     public List<AuctionDTO> getUserAuctions(Integer id) {
         if (id == null)
             throw new IllegalArgumentException();
-
         User user = new User(id);
         return auctionRepository.findAllByOwner(user).stream().map(auctionMapper::mapToAuctionDTO).toList();
     }
@@ -73,7 +68,6 @@ public class UserService {
     public List<AuctionDTO> getUserWonAuctions(Integer id) {
         if (id == null)
             throw new IllegalArgumentException();
-
         User user = new User(id);
         return auctionRepository.findAllByWinner(user).stream().map(auctionMapper::mapToAuctionDTO).toList();
     }

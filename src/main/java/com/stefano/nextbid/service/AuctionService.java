@@ -16,11 +16,8 @@ import java.util.List;
 
 @Service
 public class AuctionService {
-
     private final AuctionMapper auctionMapper;
-
     private final AuctionRepository auctionRepository;
-
     private final SessionManager sessionManager;
 
     @Autowired
@@ -44,11 +41,9 @@ public class AuctionService {
     public List<AuctionDTO> getAllAuctions(String q) throws IllegalArgumentException {
         if (q == null)
             throw new IllegalArgumentException();
-
         if (q.isEmpty()) {
             return auctionRepository.findAllByOrderByCreatedAtDesc().stream().map(auctionMapper::mapToAuctionDTO).toList();
         }
-
         return auctionRepository.findAllByTitleContainingIgnoreCaseOrDescriptionContainingIgnoreCase(q, q)
                 .stream().map(auctionMapper::mapToAuctionDTO).toList();
     }
@@ -56,37 +51,27 @@ public class AuctionService {
     public AuctionDTO getAuctionById(Integer id) throws InvalidIdException {
         if (id == null)
             throw new InvalidIdException();
-
         Auction auction = auctionRepository.findById(id).orElseThrow(InvalidIdException::new);
-
         return auctionMapper.mapToAuctionDTO(auction);
     }
 
     public void updateAuctionById(Integer id, UpdateAuctionBody body) throws IllegalArgumentException, NotAuthenticatedException, InvalidIdException, NotAuthorizedException {
-
         if (body == null || id == null)
             throw new IllegalArgumentException();
-
         if (!sessionManager.isAuthenticated())
             throw new NotAuthenticatedException();
-
         Auction auction = auctionRepository.findById(id).orElseThrow(InvalidIdException::new);
-
         if (!sessionManager.getUserId().equals(auction.getOwner().get_id()))
             throw new NotAuthorizedException();
-
         boolean isUpdated = false;
-
         if (body.title() != null && !body.title().isEmpty()) {
             auction.setTitle(body.title());
             isUpdated = true;
         }
-
         if (body.description() != null && !body.description().isEmpty()) {
             auction.setDescription(body.description());
             isUpdated = true;
         }
-
         if (isUpdated)
             auctionRepository.save(auction);
     }
@@ -94,15 +79,11 @@ public class AuctionService {
     public void deleteAuctionById(Integer id) throws IllegalArgumentException, NotAuthenticatedException, InvalidIdException, NotAuthorizedException {
         if (id == null)
             throw new IllegalArgumentException();
-
         if (!sessionManager.isAuthenticated())
             throw new NotAuthenticatedException();
-
         Auction auction = auctionRepository.findById(id).orElseThrow(InvalidIdException::new);
-
         if (!sessionManager.getUserId().equals((auction.getOwner().get_id())))
             throw new NotAuthorizedException();
-
         auctionRepository.delete(auction);
     }
 

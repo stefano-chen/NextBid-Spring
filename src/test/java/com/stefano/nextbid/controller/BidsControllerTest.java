@@ -26,46 +26,43 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(BidsController.class)
 class BidsControllerTest {
-
     @Autowired
     private MockMvc mockMvc;
-
     @MockitoBean
     private BidService bidService;
 
     @Test
     void getAuctionBidsWhenThereAreBidsShouldSuccess() throws Exception {
-
         List<BidDTO> bids = List.of(
                 new BidDTO(1, new User(1), new Auction(1), 10.0, Instant.now()),
                 new BidDTO(2, new User(10), new Auction(1), 11.0, Instant.now())
         );
-
         when(bidService.findByAuctionId(1)).thenReturn(bids);
-
-        assertTrue(this.mockMvc.perform(get("/api/auctions/1/bids")).andDo(print()).andExpect(status().isOk())
+        assertTrue(this.mockMvc.perform(get("/api/auctions/1/bids"))
+                .andDo(print()).andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString().length() > 2);
     }
 
     @Test
     void getAuctionBidsWhenThereAreNoBidsShouldReturnEmptyList() throws Exception {
-
         when(bidService.findByAuctionId(100)).thenReturn(List.of());
-
-        assertEquals(2, this.mockMvc.perform(get("/api/auctions/1/bids")).andDo(print()).andExpect(status().isOk())
+        assertEquals(2, this.mockMvc.perform(get("/api/auctions/1/bids"))
+                .andDo(print()).andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString().length());
     }
 
     @Test
     void createBidWithValidDataShouldSuccess() throws Exception {
         String body = "{\"amount\": 10}";
-        this.mockMvc.perform(post("/api/auctions/1/bids").content(body).contentType("application/json")).andDo(print()).andExpect(status().isOk());
+        this.mockMvc.perform(post("/api/auctions/1/bids").content(body).contentType("application/json"))
+                .andDo(print()).andExpect(status().isOk());
     }
 
     @Test
     void createBidWithInvalidDataShouldFail() throws Exception {
         String body = "{\"amount\": -10}";
-        this.mockMvc.perform(post("/api/auctions/1/bids").content(body).contentType("application/json")).andDo(print()).andExpect(status().isBadRequest());
+        this.mockMvc.perform(post("/api/auctions/1/bids").content(body).contentType("application/json"))
+                .andDo(print()).andExpect(status().isBadRequest());
     }
 
 
@@ -73,15 +70,13 @@ class BidsControllerTest {
     void getBidDetailWithValidIdShouldSuccess() throws Exception {
         BidDTO response = new BidDTO(1, new User(1), new Auction(1), 10.0, Instant.now());
         when(bidService.getBidDetail(1)).thenReturn(response);
-
-        this.mockMvc.perform(get("/api/bids/1")).andDo(print()).andExpect(status().isOk()).andExpect(jsonPath("$._id").value(1));
+        this.mockMvc.perform(get("/api/bids/1")).andDo(print()).andExpect(status().isOk())
+                .andExpect(jsonPath("$._id").value(1));
     }
 
     @Test
     void getBidDetailWithInvalidIdShouldFail() throws Exception {
-
         doThrow(new InvalidIdException()).when(bidService).getBidDetail(1291);
-
         this.mockMvc.perform(get("/api/bids/1291")).andDo(print()).andExpect(status().isBadRequest());
     }
 }

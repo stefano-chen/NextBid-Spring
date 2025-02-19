@@ -11,30 +11,22 @@ import java.time.Instant;
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "users")
 public class User {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer _id;
-
     @Column(unique = true, nullable = false)
     private String username;
-
     @Column(nullable = false)
     private String name;
-
     @Column(nullable = false)
     private String surname;
-
     private String bio;
-
     @Column(nullable = false)
     @JsonIgnore
     private String password;
-
     @CreatedDate
     @Column(nullable = false, updatable = false)
     private Instant createdAt;
-
     @Version
     private int version;
 

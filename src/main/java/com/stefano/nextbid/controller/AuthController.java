@@ -19,7 +19,6 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
-
     private final AuthService authService;
 
     public AuthController(AuthService service) {
@@ -57,9 +56,7 @@ public class AuthController {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<?> handleValidationFail(MethodArgumentNotValidException e) {
         List<String> errors = new ArrayList<>();
-
         e.getBindingResult().getAllErrors().forEach(error -> errors.add(error.getDefaultMessage()));
-
         return new ResponseEntity<>(Map.of("error", errors), HttpStatus.BAD_REQUEST);
     }
 }

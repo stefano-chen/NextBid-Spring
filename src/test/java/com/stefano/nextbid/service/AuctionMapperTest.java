@@ -21,7 +21,12 @@ class AuctionMapperTest {
 
     @Test
     void mapToAuctionWithValidArgShouldReturnAuction() {
-        Auction auction = auctionMapper.mapToAuction(new CreateAuctionBody("title", "description", 10, Instant.parse("3024-02-20T07:00:00.00Z")), new User(1));
+        Auction auction = auctionMapper.mapToAuction(
+                new CreateAuctionBody(
+                        "title", "description", 10,
+                        Instant.parse("3024-02-20T07:00:00.00Z")
+                ), new User(1)
+        );
         assertEquals("title", auction.getTitle());
         assertEquals("description", auction.getDescription());
         assertEquals(10, auction.getInitialBid());
@@ -36,7 +41,12 @@ class AuctionMapperTest {
 
     @Test
     void mapToAuctionDTOWithValidArgShouldReturnAuctionDTO() {
-        AuctionDTO auctionDTO = auctionMapper.mapToAuctionDTO(new Auction("title", "description", Instant.parse("3024-02-20T07:00:00.00Z"), 10, new User(1), null));
+        AuctionDTO auctionDTO = auctionMapper.mapToAuctionDTO(
+                new Auction(
+                        "title", "description",
+                        Instant.parse("3024-02-20T07:00:00.00Z"), 10, new User(1), null
+                )
+        );
         assertEquals("title", auctionDTO.title());
         assertEquals("description", auctionDTO.description());
         assertEquals(10, auctionDTO.initialBid());

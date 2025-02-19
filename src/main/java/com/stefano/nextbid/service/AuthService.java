@@ -15,15 +15,10 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class AuthService {
-
     private final UserMapper userMapper;
-
     private final UserRepository userRepository;
-
     private final SessionManager sessionManager;
-
     private final BcryptFunction bcryptFunction;
-
 
     @Autowired
     public AuthService(UserMapper userMapper, UserRepository userRepository, SessionManager sessionManager, BcryptFunction bcryptFunction) {

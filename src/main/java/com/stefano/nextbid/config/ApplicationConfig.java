@@ -13,6 +13,5 @@ public class ApplicationConfig {
     @Bean
     public BcryptFunction bcryptFunction() {
         return BcryptFunction.getInstance(Bcrypt.B, 12);
-
     }
 }

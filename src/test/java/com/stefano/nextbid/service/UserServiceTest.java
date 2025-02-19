@@ -20,18 +20,14 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 class UserServiceTest {
-
-    private UserRepository userRepository = mock(UserRepository.class);
-
-    private AuctionRepository auctionRepository = mock(AuctionRepository.class);
-
-    private UserMapper userMapper = mock(UserMapper.class);
-
-    private SessionManager sessionManager = mock(SessionManager.class);
-
-    private AuctionMapper auctionMapper = mock(AuctionMapper.class);
-
-    private UserService userService = new UserService(userRepository, auctionRepository, userMapper, sessionManager, auctionMapper);
+    private final UserRepository userRepository = mock(UserRepository.class);
+    private final AuctionRepository auctionRepository = mock(AuctionRepository.class);
+    private final UserMapper userMapper = mock(UserMapper.class);
+    private final SessionManager sessionManager = mock(SessionManager.class);
+    private final AuctionMapper auctionMapper = mock(AuctionMapper.class);
+    private final UserService userService = new UserService(
+            userRepository, auctionRepository, userMapper, sessionManager, auctionMapper
+    );
 
     @Test
     void getAllUsersWithNullArgShouldThrow() {
@@ -59,8 +55,9 @@ class UserServiceTest {
     void getUserWithValidIdShouldReturnFullDetail() {
         User user = new User("stefanoss", "stefano", "chen", "bio", "password");
         when(userRepository.findById(any())).thenReturn(Optional.of(user));
-        when(userMapper.mapToUserDTO(user)).thenReturn(new UserDTO(1, "stefanoss", "stefano", "chen", "bio", Instant.now()));
-
+        when(userMapper.mapToUserDTO(user)).thenReturn(
+                new UserDTO(1, "stefanoss", "stefano", "chen", "bio", Instant.now())
+        );
         UserDTO userDTO = userService.getUser(1);
         assertEquals("stefanoss", userDTO.username());
         assertEquals("stefano", userDTO.name());
@@ -72,7 +69,11 @@ class UserServiceTest {
     void updateBioWithValidBodyAndAuthenticatedShouldSuccess() {
         when(sessionManager.isAuthenticated()).thenReturn(true);
         when(sessionManager.getUserId()).thenReturn(1);
-        when(userRepository.findById(1)).thenReturn(Optional.of(new User("stefanoss", "stefano", "chen", "bio", "password")));
+        when(userRepository.findById(1)).thenReturn(
+                Optional.of(new User(
+                        "stefanoss", "stefano", "chen", "bio", "password"
+                ))
+        );
         assertDoesNotThrow(() -> {
             userService.updateBio("ciao");
         });
@@ -97,13 +98,12 @@ class UserServiceTest {
     void getUserAuctionWithValidIdShouldReturnList() {
         Integer id = 1;
         User user = new User(id);
-
-        when(auctionRepository.findAllByOwner(any())).thenReturn(List.of(new Auction("auction", "auction", Instant.now(), 10.0, user, null)));
-
+        when(auctionRepository.findAllByOwner(any())).thenReturn(List.of(
+                new Auction("auction", "auction", Instant.now(), 10.0, user, null)
+                )
+        );
         when(auctionMapper.mapToAuctionDTO(any())).thenCallRealMethod();
-
         List<AuctionDTO> auctionList = userService.getUserAuctions(id);
-
         assertEquals(user, auctionList.get(0).owner());
     }
 
@@ -117,13 +117,12 @@ class UserServiceTest {
     void getUserWonAuctionWithValidIdShouldReturnList() {
         Integer id = 1;
         User user = new User(id);
-
-        when(auctionRepository.findAllByWinner(any())).thenReturn(List.of(new Auction("auction", "auction", Instant.now(), 10.0, user, null)));
-
+        when(auctionRepository.findAllByWinner(any())).thenReturn(List.of(
+                new Auction("auction", "auction", Instant.now(), 10.0, user, null)
+                )
+        );
         when(auctionMapper.mapToAuctionDTO(any())).thenCallRealMethod();
-
         List<AuctionDTO> auctionList = userService.getUserWonAuctions(id);
-
         assertEquals(user, auctionList.get(0).owner());
     }
 

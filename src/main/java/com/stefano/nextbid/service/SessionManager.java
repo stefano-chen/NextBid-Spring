@@ -6,14 +6,12 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class SessionManager {
-
     private final HttpSession session;
 
     @Autowired
     public SessionManager(HttpSession session) {
         this.session = session;
     }
-
 
     public void setUserId(Integer id) {
         session.setAttribute("uid", id);

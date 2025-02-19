@@ -21,17 +21,11 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 class AuthServiceTest {
-
     private final UserMapper userMapper = mock(UserMapper.class);
-
     private final UserRepository userRepository = mock(UserRepository.class);
-
     private final SessionManager sessionManager = mock(SessionManager.class);
-
     private final BcryptFunction bcryptFunction = BcryptFunction.getInstance(Bcrypt.B, 12);
-
     private final AuthService authService = new AuthService(userMapper, userRepository, sessionManager, bcryptFunction);
-
 
     @Test
     void signupWithNullArgShouldThrowException() {
@@ -45,15 +39,13 @@ class AuthServiceTest {
 
         SignupBody body = new SignupBody("stefano", "chen", "stefanoss", "hello");
         User user = new User("stefanoss", "stefano", "chen", "", "body");
+        user.set_id(1);
         UserDTO userDTO = new UserDTO(1, "stefanoss", "stefano", "chen", "", Instant.now());
         when(userMapper.mapToUser(body)).thenReturn(user);
-        user.set_id(1);
         when(userRepository.findUserByUsername(user.getUsername())).thenReturn(Optional.empty());
         when(userRepository.save(user)).thenReturn(user);
         when(userMapper.mapToUserDTO(user)).thenReturn(userDTO);
-
         UserDTO response = authService.signup(body);
-
         assertEquals("stefano", response.name());
         assertEquals("chen", response.surname());
         assertEquals("stefanoss", response.username());
@@ -61,16 +53,14 @@ class AuthServiceTest {
 
     @Test
     void signupWithExistingUsernameShouldThrowException() {
-
         SignupBody body = new SignupBody("stefano", "chen", "stefanoss", "hello");
         User user = new User("stefanoss", "stefano", "chen", "", "body");
+        user.set_id(1);
         UserDTO userDTO = new UserDTO(1, "stefanoss", "stefano", "chen", "", Instant.now());
         when(userMapper.mapToUser(body)).thenReturn(user);
-        user.set_id(1);
         when(userRepository.findUserByUsername(user.getUsername())).thenReturn(Optional.of(user));
         when(userRepository.save(user)).thenReturn(user);
         when(userMapper.mapToUserDTO(user)).thenReturn(userDTO);
-
         assertThrows(UsernameAlreadyExistsException.class, () -> authService.signup(body));
     }
 
@@ -83,33 +73,36 @@ class AuthServiceTest {
     @Test
     void signinWithValidBodyShouldReturnUserDTO() {
         SigninBody body = new SigninBody("stefanoss", "hello");
-        User user = new User("stefanoss", "stefano", "chen", "bio", Password.hash("hello").with(bcryptFunction).getResult());
-        UserDTO mappedUser = new UserDTO(1, "stefanoss", "stefano", "chen", "bio", Instant.now());
+        User user = new User(
+                "stefanoss", "stefano", "chen", "bio",
+                Password.hash("hello").with(bcryptFunction).getResult()
+        );
+        UserDTO mappedUser = new UserDTO(
+                1, "stefanoss", "stefano", "chen", "bio", Instant.now()
+        );
         when(userRepository.findUserByUsername(body.username())).thenReturn(Optional.of(user));
         when(userMapper.mapToUserDTO(user)).thenReturn(mappedUser);
-
         UserDTO response = authService.signin(body);
-
         assertEquals("stefanoss", response.username());
         assertEquals("stefano", response.name());
         assertEquals("chen", response.surname());
         assertEquals("bio", response.bio());
-
-//        assertThrows(NullPointerException.class, () -> authService.signup(null));
     }
 
     @Test
     void signinWithInvalidUsernameShouldThrow() {
         SigninBody body = new SigninBody("mario", "hello");
         when(userRepository.findUserByUsername(body.username())).thenReturn(Optional.empty());
-
         assertThrows(InvalidCredentialsException.class, () -> authService.signin(body));
     }
 
     @Test
     void signinWithInvalidPasswordShouldThrow() {
         SigninBody body = new SigninBody("stefanoss", "hello");
-        User user = new User("stefanoss", "stefano", "chen", "bio", Password.hash("password").with(bcryptFunction).getResult());
+        User user = new User(
+                "stefanoss", "stefano", "chen", "bio",
+                Password.hash("password").with(bcryptFunction).getResult()
+        );
         UserDTO mappedUser = new UserDTO(1, "stefanoss", "stefano", "chen", "bio", Instant.now());
         when(userRepository.findUserByUsername(body.username())).thenReturn(Optional.of(user));
         when(userMapper.mapToUserDTO(user)).thenReturn(mappedUser);
