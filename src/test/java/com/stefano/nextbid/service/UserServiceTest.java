@@ -58,7 +58,9 @@ class UserServiceTest {
         when(userMapper.mapToUserDTO(user)).thenReturn(
                 new UserDTO(1, "stefanoss", "stefano", "chen", "bio", Instant.now())
         );
+
         UserDTO userDTO = userService.getUser(1);
+
         assertEquals("stefanoss", userDTO.username());
         assertEquals("stefano", userDTO.name());
         assertEquals("chen", userDTO.surname());
@@ -103,7 +105,9 @@ class UserServiceTest {
                 )
         );
         when(auctionMapper.mapToAuctionDTO(any())).thenCallRealMethod();
+
         List<AuctionDTO> auctionList = userService.getUserAuctions(id);
+
         assertEquals(user, auctionList.get(0).owner());
     }
 
@@ -122,7 +126,9 @@ class UserServiceTest {
                 )
         );
         when(auctionMapper.mapToAuctionDTO(any())).thenCallRealMethod();
+
         List<AuctionDTO> auctionList = userService.getUserWonAuctions(id);
+
         assertEquals(user, auctionList.get(0).owner());
     }
 

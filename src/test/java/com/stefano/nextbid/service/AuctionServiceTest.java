@@ -51,7 +51,9 @@ class AuctionServiceTest {
         when(sessionManager.getUserId()).thenReturn(1);
         when(auctionRepository.save(mappedAuction)).thenReturn(mappedAuction);
         when(auctionMapper.mapToAuctionDTO(mappedAuction)).thenReturn(auctionDTO);
+
         AuctionDTO response = auctionService.createAuction(body);
+
         assertEquals(body.title(), response.title());
         assertEquals(body.description(), response.description());
         assertEquals(body.dueDate(), response.dueDate());
@@ -86,7 +88,9 @@ class AuctionServiceTest {
                 10.0, new User(1), null)
         );
         when(auctionRepository.findAllByOrderByCreatedAtDesc()).thenReturn(databaseAuctions);
+
         List<AuctionDTO> auctions = auctionService.getAllAuctions(query);
+
         assertEquals(databaseAuctions.size(), auctions.size());
     }
 
@@ -106,7 +110,9 @@ class AuctionServiceTest {
         );
         when(auctionRepository.findAllByTitleContainingIgnoreCaseOrDescriptionContainingIgnoreCase(query, query))
                 .thenReturn(databaseAuctions);
+
         List<AuctionDTO> auctions = auctionService.getAllAuctions(query);
+
         assertEquals(databaseAuctions.size(), auctions.size());
     }
 
@@ -115,7 +121,9 @@ class AuctionServiceTest {
         String query = "title1";
         when(auctionRepository.findAllByTitleContainingIgnoreCaseOrDescriptionContainingIgnoreCase(query, query))
                 .thenReturn(List.of());
+
         List<AuctionDTO> auctions = auctionService.getAllAuctions(query);
+
         assertEquals(0, auctions.size());
     }
 
@@ -130,7 +138,9 @@ class AuctionServiceTest {
                         Instant.now().plus(1, ChronoUnit.DAYS), Instant.now(), new User(1), null
                 )
         );
+
         AuctionDTO response = auctionService.getAuctionById(id);
+
         assertEquals(1, response._id());
     }
 
@@ -138,6 +148,7 @@ class AuctionServiceTest {
     void getAuctionByIdWithInvalidIdShouldThrow() {
         Integer id = 1;
         when(auctionRepository.findById(id)).thenReturn(Optional.empty());
+
         assertThrows(InvalidIdException.class, () -> auctionService.getAuctionById(id));
     }
 
@@ -152,6 +163,7 @@ class AuctionServiceTest {
         when(sessionManager.isAuthenticated()).thenReturn(true);
         when(sessionManager.getUserId()).thenReturn(100);
         when(auctionRepository.findById(id)).thenReturn(Optional.of(auction));
+
         assertDoesNotThrow(() -> auctionService.updateAuctionById(id, body));
     }
 
@@ -162,6 +174,7 @@ class AuctionServiceTest {
         when(sessionManager.isAuthenticated()).thenReturn(true);
         when(sessionManager.getUserId()).thenReturn(100);
         when(auctionRepository.findById(id)).thenReturn(Optional.empty());
+
         assertThrows(InvalidIdException.class, () -> auctionService.updateAuctionById(id, body));
     }
 
@@ -173,6 +186,7 @@ class AuctionServiceTest {
     @Test
     void updateAuctionByIdWhileNotAuthenticatedShouldThrow() {
         when(sessionManager.isAuthenticated()).thenReturn(false);
+
         assertThrows(
                 NotAuthenticatedException.class,
                 () -> auctionService.updateAuctionById(1, new UpdateAuctionBody("new title", "new desc"))
@@ -189,6 +203,7 @@ class AuctionServiceTest {
         when(sessionManager.isAuthenticated()).thenReturn(true);
         when(sessionManager.getUserId()).thenReturn(1);
         when(auctionRepository.findById(id)).thenReturn(Optional.of(auction));
+
         assertThrows(
                 NotAuthorizedException.class,
                 () -> auctionService.updateAuctionById(1, new UpdateAuctionBody("new title", "new desc"))
@@ -205,6 +220,7 @@ class AuctionServiceTest {
         when(sessionManager.isAuthenticated()).thenReturn(true);
         when(sessionManager.getUserId()).thenReturn(100);
         when(auctionRepository.findById(id)).thenReturn(Optional.of(auction));
+
         assertDoesNotThrow(
                 () -> auctionService.updateAuctionById(1, new UpdateAuctionBody("new title", null))
         );
@@ -220,6 +236,7 @@ class AuctionServiceTest {
         when(sessionManager.isAuthenticated()).thenReturn(true);
         when(sessionManager.getUserId()).thenReturn(100);
         when(auctionRepository.findById(id)).thenReturn(Optional.of(auction));
+
         assertDoesNotThrow(() -> auctionService.deleteAuctionById(id));
     }
 
@@ -230,6 +247,7 @@ class AuctionServiceTest {
         when(sessionManager.isAuthenticated()).thenReturn(true);
         when(sessionManager.getUserId()).thenReturn(100);
         when(auctionRepository.findById(id)).thenReturn(Optional.empty());
+
         assertThrows(InvalidIdException.class, () -> auctionService.deleteAuctionById(id));
     }
 
@@ -254,6 +272,7 @@ class AuctionServiceTest {
         when(sessionManager.isAuthenticated()).thenReturn(true);
         when(sessionManager.getUserId()).thenReturn(1);
         when(auctionRepository.findById(id)).thenReturn(Optional.of(auction));
+
         assertThrows(NotAuthorizedException.class, () -> auctionService.deleteAuctionById(1));
     }
 }

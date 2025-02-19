@@ -27,6 +27,7 @@ class AuctionMapperTest {
                         Instant.parse("3024-02-20T07:00:00.00Z")
                 ), new User(1)
         );
+
         assertEquals("title", auction.getTitle());
         assertEquals("description", auction.getDescription());
         assertEquals(10, auction.getInitialBid());
@@ -47,6 +48,7 @@ class AuctionMapperTest {
                         Instant.parse("3024-02-20T07:00:00.00Z"), 10, new User(1), null
                 )
         );
+
         assertEquals("title", auctionDTO.title());
         assertEquals("description", auctionDTO.description());
         assertEquals(10, auctionDTO.initialBid());

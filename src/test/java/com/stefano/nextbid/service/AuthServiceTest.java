@@ -31,12 +31,12 @@ class AuthServiceTest {
     void signupWithNullArgShouldThrowException() {
         when(userMapper.mapToUser(null)).thenReturn(null);
         when(userRepository.findUserByUsername(null)).thenThrow(NullPointerException.class);
+
         assertThrows(NullPointerException.class, () -> authService.signup(null));
     }
 
     @Test
     void signupWithValidBodyShouldReturnUserDTO() {
-
         SignupBody body = new SignupBody("stefano", "chen", "stefanoss", "hello");
         User user = new User("stefanoss", "stefano", "chen", "", "body");
         user.set_id(1);
@@ -45,7 +45,9 @@ class AuthServiceTest {
         when(userRepository.findUserByUsername(user.getUsername())).thenReturn(Optional.empty());
         when(userRepository.save(user)).thenReturn(user);
         when(userMapper.mapToUserDTO(user)).thenReturn(userDTO);
+
         UserDTO response = authService.signup(body);
+
         assertEquals("stefano", response.name());
         assertEquals("chen", response.surname());
         assertEquals("stefanoss", response.username());
@@ -61,6 +63,7 @@ class AuthServiceTest {
         when(userRepository.findUserByUsername(user.getUsername())).thenReturn(Optional.of(user));
         when(userRepository.save(user)).thenReturn(user);
         when(userMapper.mapToUserDTO(user)).thenReturn(userDTO);
+
         assertThrows(UsernameAlreadyExistsException.class, () -> authService.signup(body));
     }
 
@@ -82,7 +85,9 @@ class AuthServiceTest {
         );
         when(userRepository.findUserByUsername(body.username())).thenReturn(Optional.of(user));
         when(userMapper.mapToUserDTO(user)).thenReturn(mappedUser);
+
         UserDTO response = authService.signin(body);
+
         assertEquals("stefanoss", response.username());
         assertEquals("stefano", response.name());
         assertEquals("chen", response.surname());
@@ -93,6 +98,7 @@ class AuthServiceTest {
     void signinWithInvalidUsernameShouldThrow() {
         SigninBody body = new SigninBody("mario", "hello");
         when(userRepository.findUserByUsername(body.username())).thenReturn(Optional.empty());
+
         assertThrows(InvalidCredentialsException.class, () -> authService.signin(body));
     }
 
@@ -106,6 +112,7 @@ class AuthServiceTest {
         UserDTO mappedUser = new UserDTO(1, "stefanoss", "stefano", "chen", "bio", Instant.now());
         when(userRepository.findUserByUsername(body.username())).thenReturn(Optional.of(user));
         when(userMapper.mapToUserDTO(user)).thenReturn(mappedUser);
+
         assertThrows(InvalidCredentialsException.class, () -> authService.signin(body));
     }
 

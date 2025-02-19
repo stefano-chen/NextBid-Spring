@@ -19,7 +19,9 @@ class UserMapperTest {
     @Test
     void mapToUserWithValidArgShouldReturnValidUser() {
         SignupBody body = new SignupBody("stefano", "chen", "stefanoss", "password");
+
         User mappedUser = userMapper.mapToUser(body);
+
         assertEquals("stefano", mappedUser.getName());
         assertEquals("chen", mappedUser.getSurname());
         assertEquals("stefanoss", mappedUser.getUsername());
@@ -34,7 +36,9 @@ class UserMapperTest {
     @Test
     void mapToUserDTOWithValidArgShouldReturnValidUserDTO() {
         User user = new User("stefanoss", "stefano", "chen", "bio", "password");
+
         UserDTO mappedUser = userMapper.mapToUserDTO(user);
+
         assertEquals("stefanoss", mappedUser.username());
         assertEquals("stefano", mappedUser.name());
         assertEquals("chen", mappedUser.surname());

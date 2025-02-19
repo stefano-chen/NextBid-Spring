@@ -44,7 +44,9 @@ class BidServiceTest {
         );
         when(bidRepository.findAllByAuctionOrderByAmountDesc(any())).thenReturn(matchedBids);
         when(bidMapper.mapToBidDTO(any())).thenCallRealMethod();
+
         List<BidDTO> bids = this.bidService.findByAuctionId(100);
+
         assertEquals(2, bids.size());
     }
 
@@ -52,7 +54,9 @@ class BidServiceTest {
     void findByAuctionIdWhenThereAreNoMatchesShouldReturnEmptyList() {
         when(bidRepository.findAllByAuctionOrderByAmountDesc(any())).thenReturn(List.of());
         when(bidMapper.mapToBidDTO(any())).thenCallRealMethod();
+
         List<BidDTO> bids = this.bidService.findByAuctionId(100);
+
         assertEquals(0, bids.size());
     }
 
@@ -64,6 +68,7 @@ class BidServiceTest {
     @Test
     void createBidWhileNotAuthenticatedShouldThrow() {
         when(sessionManager.isAuthenticated()).thenReturn(false);
+
         assertThrows(
                 NotAuthenticatedException.class,
                 () -> bidService.createBid(1, new CreateBidBody(10))
@@ -74,6 +79,7 @@ class BidServiceTest {
     void createBidWithInvalidAuctionIdShouldThrow() {
         when(sessionManager.isAuthenticated()).thenReturn(true);
         when(auctionRepository.findById(any())).thenReturn(Optional.empty());
+
         assertThrows(
                 InvalidIdException.class,
                 () -> bidService.createBid(-10, new CreateBidBody(100))
@@ -88,6 +94,7 @@ class BidServiceTest {
         );
         when(sessionManager.isAuthenticated()).thenReturn(true);
         when(auctionRepository.findById(1)).thenReturn(Optional.of(auction));
+
         assertThrows(
                 AuctionClosedException.class,
                 () -> bidService.createBid(1, new CreateBidBody(10))
@@ -100,13 +107,14 @@ class BidServiceTest {
                 "auction", "desc", Instant.now().plus(1, ChronoUnit.DAYS),
                 10, new User(1), null
         );
-        when(sessionManager.isAuthenticated()).thenReturn(true);
-        when(auctionRepository.findById(1)).thenReturn(Optional.of(auction));
         List<Bid> allBids = new ArrayList<>();
         Bid lastBid = new Bid();
         lastBid.setAmount(1000);
         allBids.add(lastBid);
+        when(sessionManager.isAuthenticated()).thenReturn(true);
+        when(auctionRepository.findById(1)).thenReturn(Optional.of(auction));
         when(bidRepository.findAllByAuctionOrderByAmountDesc(any(Auction.class))).thenReturn(allBids);
+
         assertThrows(
                 AmountTooLowException.class,
                 () -> bidService.createBid(1, new CreateBidBody(10))
@@ -119,13 +127,14 @@ class BidServiceTest {
                 "auction", "desc", Instant.now().plus(1, ChronoUnit.DAYS),
                 10, new User(1), null
         );
-        when(sessionManager.isAuthenticated()).thenReturn(true);
-        when(auctionRepository.findById(1)).thenReturn(Optional.of(auction));
         List<Bid> allBids = new ArrayList<>();
         Bid lastBid = new Bid();
         lastBid.setAmount(100);
         allBids.add(lastBid);
+        when(sessionManager.isAuthenticated()).thenReturn(true);
+        when(auctionRepository.findById(1)).thenReturn(Optional.of(auction));
         when(bidRepository.findAllByAuctionOrderByAmountDesc(any(Auction.class))).thenReturn(allBids);
+
         assertDoesNotThrow(() -> bidService.createBid(1, new CreateBidBody(1000)));
     }
 
@@ -135,7 +144,9 @@ class BidServiceTest {
         foundBid.setId(1);
         when(bidRepository.findById(1)).thenReturn(Optional.of(foundBid));
         when(bidMapper.mapToBidDTO(foundBid)).thenCallRealMethod();
+
         BidDTO result = bidService.getBidDetail(1);
+
         assertEquals(1, result._id());
     }
 
