@@ -7,8 +7,8 @@ import java.time.Instant;
 
 public record BidDTO(
         Integer _id,
-        User user,
-        Auction auction,
+        Integer user,
+        Integer auction,
         double amount,
         Instant createdAt
 ) {

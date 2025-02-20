@@ -13,7 +13,7 @@ import java.time.Instant;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer _id;
+    private Integer id;
     @Column(unique = true, nullable = false)
     private String username;
     @Column(nullable = false)
@@ -43,7 +43,7 @@ public class User {
     }
 
     public User(Integer id) {
-        this._id = id;
+        this.id = id;
     }
 
     public Integer getVersion() {
@@ -102,18 +102,18 @@ public class User {
         this.username = username;
     }
 
-    public Integer get_id() {
-        return _id;
+    public Integer getId() {
+        return id;
     }
 
-    public void set_id(Integer id) {
-        this._id = id;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     @Override
     public String toString() {
         return "User{" +
-                "id=" + _id +
+                "id=" + id +
                 ", username='" + username + '\'' +
                 ", name='" + name + '\'' +
                 ", surname='" + surname + '\'' +

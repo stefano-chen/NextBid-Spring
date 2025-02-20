@@ -24,8 +24,8 @@ public class Auction {
     @ManyToOne
     @JoinColumn(name = "ownerId", nullable = false)
     private User owner;
-    @OneToOne
-    @JoinColumn(name = "winnerId", nullable = true)
+    @ManyToOne
+    @JoinColumn(name = "winnerId", nullable = true, unique = false)
     private User winner;
     @CreatedDate
     @Column(nullable = false, updatable = false)

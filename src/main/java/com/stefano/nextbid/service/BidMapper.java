@@ -11,6 +11,6 @@ public class BidMapper {
     public BidDTO mapToBidDTO(Bid bid) {
         if (bid == null)
             return null;
-        return new BidDTO(bid.getId(), bid.getUser(), bid.getAuction(), bid.getAmount(), bid.getCreatedAt());
+        return new BidDTO(bid.getId(), bid.getUser().getId(), bid.getAuction().getId(), bid.getAmount(), bid.getCreatedAt());
     }
 }

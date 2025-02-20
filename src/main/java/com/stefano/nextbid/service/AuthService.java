@@ -36,7 +36,7 @@ public class AuthService {
         Hash hash = Password.hash(user.getPassword()).with(bcryptFunction);
         user.setPassword(hash.getResult());
         User savedUser = userRepository.save(user);
-        sessionManager.setUserId(savedUser.get_id());
+        sessionManager.setUserId(savedUser.getId());
         return userMapper.mapToUserDTO(savedUser);
     }
 
@@ -45,7 +45,7 @@ public class AuthService {
         if (!(Password.check(body.password(), user.getPassword()).with(bcryptFunction))) {
             throw new InvalidCredentialsException();
         }
-        sessionManager.setUserId(user.get_id());
+        sessionManager.setUserId(user.getId());
         return userMapper.mapToUserDTO(user);
     }
 

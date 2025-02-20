@@ -21,6 +21,6 @@ public class AuctionMapper {
             return null;
         return new AuctionDTO(auction.getId(), auction.getTitle(), auction.getDescription(),
                 auction.getInitialBid(), auction.getDueDate(), auction.getCreatedAt(),
-                auction.getOwner(), auction.getWinner());
+                auction.getOwner().getId(), auction.getWinner() == null? null : auction.getWinner().getId());
     }
 }

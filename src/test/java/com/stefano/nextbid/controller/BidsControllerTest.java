@@ -34,8 +34,8 @@ class BidsControllerTest {
     @Test
     void getAuctionBidsWhenThereAreBidsShouldSuccess() throws Exception {
         List<BidDTO> bids = List.of(
-                new BidDTO(1, new User(1), new Auction(1), 10.0, Instant.now()),
-                new BidDTO(2, new User(10), new Auction(1), 11.0, Instant.now())
+                new BidDTO(1, 1, 1, 10.0, Instant.now()),
+                new BidDTO(2, 10, 1, 11.0, Instant.now())
         );
         when(bidService.findByAuctionId(1)).thenReturn(bids);
         assertTrue(this.mockMvc.perform(get("/api/auctions/1/bids"))
@@ -68,7 +68,7 @@ class BidsControllerTest {
 
     @Test
     void getBidDetailWithValidIdShouldSuccess() throws Exception {
-        BidDTO response = new BidDTO(1, new User(1), new Auction(1), 10.0, Instant.now());
+        BidDTO response = new BidDTO(1, 1, 1, 10.0, Instant.now());
         when(bidService.getBidDetail(1)).thenReturn(response);
         this.mockMvc.perform(get("/api/bids/1")).andDo(print()).andExpect(status().isOk())
                 .andExpect(jsonPath("$._id").value(1));

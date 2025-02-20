@@ -28,8 +28,8 @@ class BidMapperTest {
         BidDTO bidDTO = bidMapper.mapToBidDTO(bid);
 
         assertEquals(bid.getId(), bidDTO._id());
-        assertEquals(bid.getUser().get_id(), bidDTO.user().get_id());
-        assertEquals(bid.getAuction().getId(), bidDTO.auction().getId());
+        assertEquals(bid.getUser().getId(), bidDTO.user());
+        assertEquals(bid.getAuction().getId(), bidDTO.auction());
         assertEquals(bid.getAmount(), bidDTO.amount());
     }
 }

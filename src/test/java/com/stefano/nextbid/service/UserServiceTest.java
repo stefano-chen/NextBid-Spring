@@ -108,7 +108,7 @@ class UserServiceTest {
 
         List<AuctionDTO> auctionList = userService.getUserAuctions(id);
 
-        assertEquals(user, auctionList.get(0).owner());
+        assertEquals(user.getId(), auctionList.get(0).owner());
     }
 
     @Test
@@ -129,7 +129,7 @@ class UserServiceTest {
 
         List<AuctionDTO> auctionList = userService.getUserWonAuctions(id);
 
-        assertEquals(user, auctionList.get(0).owner());
+        assertEquals(user.getId(), auctionList.get(0).owner());
     }
 
     @Test

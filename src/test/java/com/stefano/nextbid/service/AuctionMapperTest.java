@@ -32,7 +32,7 @@ class AuctionMapperTest {
         assertEquals("description", auction.getDescription());
         assertEquals(10, auction.getInitialBid());
         assertEquals(Instant.parse("3024-02-20T07:00:00.00Z"), auction.getDueDate());
-        assertEquals(1, auction.getOwner().get_id());
+        assertEquals(1, auction.getOwner().getId());
     }
 
     @Test
@@ -53,6 +53,6 @@ class AuctionMapperTest {
         assertEquals("description", auctionDTO.description());
         assertEquals(10, auctionDTO.initialBid());
         assertEquals(Instant.parse("3024-02-20T07:00:00.00Z"), auctionDTO.dueDate());
-        assertEquals(1, auctionDTO.owner().get_id());
+        assertEquals(1, auctionDTO.owner());
     }
 }
