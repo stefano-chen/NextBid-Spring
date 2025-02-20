@@ -61,7 +61,7 @@ public class AuctionService {
         if (!sessionManager.isAuthenticated())
             throw new NotAuthenticatedException();
         Auction auction = auctionRepository.findById(id).orElseThrow(InvalidIdException::new);
-        if (!sessionManager.getUserId().equals(auction.getOwner().get_id()))
+        if (!sessionManager.getUserId().equals(auction.getOwner().getId()))
             throw new NotAuthorizedException();
         boolean isUpdated = false;
         if (body.title() != null && !body.title().isEmpty()) {
@@ -82,7 +82,7 @@ public class AuctionService {
         if (!sessionManager.isAuthenticated())
             throw new NotAuthenticatedException();
         Auction auction = auctionRepository.findById(id).orElseThrow(InvalidIdException::new);
-        if (!sessionManager.getUserId().equals((auction.getOwner().get_id())))
+        if (!sessionManager.getUserId().equals((auction.getOwner().getId())))
             throw new NotAuthorizedException();
         auctionRepository.delete(auction);
     }

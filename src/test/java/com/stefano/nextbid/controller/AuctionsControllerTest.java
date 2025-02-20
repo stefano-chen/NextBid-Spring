@@ -59,7 +59,7 @@ class AuctionsControllerTest {
         );
         AuctionDTO createdAuction = new AuctionDTO(
                 1, "auction", "description", 10.0,
-                Instant.parse("3026-07-20T13:05:30.00Z"), Instant.now(), new User(1), null
+                Instant.parse("3026-07-20T13:05:30.00Z"), Instant.now(), 1, null
         );
         when(auctionService.createAuction(auctionBody)).thenReturn(createdAuction);
         this.mockMvc.perform(post("/api/auctions").content(body).contentType("application/json"))
@@ -80,11 +80,11 @@ class AuctionsControllerTest {
         List<AuctionDTO> auctions = List.of(
                 new AuctionDTO(
                         1, "title1", "description1", 10.0,
-                        Instant.now().plus(1, ChronoUnit.DAYS), Instant.now(), new User(1), null
+                        Instant.now().plus(1, ChronoUnit.DAYS), Instant.now(), 1, null
                 ),
                 new AuctionDTO(
                         2, "title2", "description2", 10.0,
-                        Instant.now().plus(1, ChronoUnit.DAYS), Instant.now(), new User(2), null
+                        Instant.now().plus(1, ChronoUnit.DAYS), Instant.now(), 2, null
                 )
         );
         when(auctionService.getAllAuctions("")).thenReturn(auctions);
@@ -98,11 +98,11 @@ class AuctionsControllerTest {
         List<AuctionDTO> auctions = List.of(
                 new AuctionDTO(
                         1, "title1", "description1", 10.0,
-                        Instant.now().plus(1, ChronoUnit.DAYS), Instant.now(), new User(1), null
+                        Instant.now().plus(1, ChronoUnit.DAYS), Instant.now(), 1, null
                 ),
                 new AuctionDTO(
                         2, "title2", "description2", 10.0,
-                        Instant.now().plus(1, ChronoUnit.DAYS), Instant.now(), new User(2), null
+                        Instant.now().plus(1, ChronoUnit.DAYS), Instant.now(), 2, null
                 )
         );
         when(auctionService.getAllAuctions("title3")).thenReturn(List.of());
@@ -117,11 +117,11 @@ class AuctionsControllerTest {
         List<AuctionDTO> auctions = List.of(
                 new AuctionDTO(
                         1, "title1", "description1", 10.0,
-                        Instant.now().plus(1, ChronoUnit.DAYS), Instant.now(), new User(1), null
+                        Instant.now().plus(1, ChronoUnit.DAYS), Instant.now(), 1, null
                 ),
                 new AuctionDTO(
                         2, "title2", "description2", 10.0,
-                        Instant.now().plus(1, ChronoUnit.DAYS), Instant.now(), new User(2), null
+                        Instant.now().plus(1, ChronoUnit.DAYS), Instant.now(), 2, null
                 )
         );
         when(auctionService.getAllAuctions("title1")).thenReturn(auctions.subList(0, 1));
@@ -134,7 +134,7 @@ class AuctionsControllerTest {
     void getAuctionByIdWithValidIdShouldReturnAuctionDetails() throws Exception {
         AuctionDTO auction = new AuctionDTO(
                 1, "title", "description", 10.0,
-                Instant.now().plus(1, ChronoUnit.DAYS), Instant.now(), new User(1), null
+                Instant.now().plus(1, ChronoUnit.DAYS), Instant.now(), 1, null
         );
         when(auctionService.getAuctionById(1)).thenReturn(auction);
         this.mockMvc.perform(get("/api/auctions/1")).andDo(print()).andExpect(status().isOk())

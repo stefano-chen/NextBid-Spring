@@ -31,7 +31,7 @@ class UtilsControllerTest {
         when(sessionManager.isAuthenticated()).thenReturn(true);
         when(sessionManager.getUserId()).thenReturn(1);
         User user = new User("stefanoss", "stefano", "chen", "bio", "hello");
-        user.set_id(1);
+        user.setId(1);
         when(userRepository.findById(1)).thenReturn(Optional.of(user));
         this.mockMvc.perform(get("/api/whoami")).andDo(print()).andExpect(status().isOk())
                 .andExpect(jsonPath("$._id").value(1))
@@ -41,6 +41,6 @@ class UtilsControllerTest {
     @Test
     void hittingWhoamiWhileUnauthenticatedShouldFail() throws Exception {
         when(sessionManager.isAuthenticated()).thenReturn(false);
-        this.mockMvc.perform(get("/api/whoami")).andDo(print()).andExpect(status().isBadRequest());
+        this.mockMvc.perform(get("/api/whoami")).andDo(print()).andExpect(status().isUnauthorized());
     }
 }

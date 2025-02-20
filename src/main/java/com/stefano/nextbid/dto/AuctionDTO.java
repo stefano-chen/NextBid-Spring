@@ -11,7 +11,7 @@ public record AuctionDTO(
         double initialBid,
         Instant dueDate,
         Instant createdAt,
-        User owner,
-        User winner
+        Integer owner,
+        Integer winner
 ) {
 }

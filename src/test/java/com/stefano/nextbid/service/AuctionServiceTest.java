@@ -44,7 +44,7 @@ class AuctionServiceTest {
         );
         AuctionDTO auctionDTO = new AuctionDTO(
                 1, mappedAuction.getTitle(), mappedAuction.getDescription(), mappedAuction.getInitialBid(),
-                mappedAuction.getDueDate(), Instant.now(), mappedAuction.getOwner(), mappedAuction.getWinner()
+                mappedAuction.getDueDate(), Instant.now(), mappedAuction.getOwner().getId(), null
         );
         when(auctionMapper.mapToAuction(refEq(body), any())).thenReturn(mappedAuction);
         when(sessionManager.isAuthenticated()).thenReturn(true);
@@ -135,7 +135,7 @@ class AuctionServiceTest {
         when(auctionMapper.mapToAuctionDTO(auction)).thenReturn(
                 new AuctionDTO(
                         1, "title", "description", 10.0,
-                        Instant.now().plus(1, ChronoUnit.DAYS), Instant.now(), new User(1), null
+                        Instant.now().plus(1, ChronoUnit.DAYS), Instant.now(), 1, null
                 )
         );
 

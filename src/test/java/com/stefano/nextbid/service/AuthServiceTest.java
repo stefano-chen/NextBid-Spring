@@ -39,7 +39,7 @@ class AuthServiceTest {
     void signupWithValidBodyShouldReturnUserDTO() {
         SignupBody body = new SignupBody("stefano", "chen", "stefanoss", "hello");
         User user = new User("stefanoss", "stefano", "chen", "", "body");
-        user.set_id(1);
+        user.setId(1);
         UserDTO userDTO = new UserDTO(1, "stefanoss", "stefano", "chen", "", Instant.now());
         when(userMapper.mapToUser(body)).thenReturn(user);
         when(userRepository.findUserByUsername(user.getUsername())).thenReturn(Optional.empty());
@@ -57,7 +57,7 @@ class AuthServiceTest {
     void signupWithExistingUsernameShouldThrowException() {
         SignupBody body = new SignupBody("stefano", "chen", "stefanoss", "hello");
         User user = new User("stefanoss", "stefano", "chen", "", "body");
-        user.set_id(1);
+        user.setId(1);
         UserDTO userDTO = new UserDTO(1, "stefanoss", "stefano", "chen", "", Instant.now());
         when(userMapper.mapToUser(body)).thenReturn(user);
         when(userRepository.findUserByUsername(user.getUsername())).thenReturn(Optional.of(user));

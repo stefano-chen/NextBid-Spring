@@ -94,21 +94,20 @@ class UsersControllerTest {
 
     @Test
     void getUserAuctionsWithValidIdShouldReturnListOfAuctions() throws Exception {
-        User user = new User(1);
         List<AuctionDTO> auctions = List.of(
                 new AuctionDTO(
                         1, "auction1", "auction", 10.0,
-                        Instant.now(), Instant.now(), user, null
+                        Instant.now(), Instant.now(), 1, null
                 ),
                 new AuctionDTO(
                         2, "auction2", "auction", 10.0,
-                        Instant.now(), Instant.now(), user, null
+                        Instant.now(), Instant.now(), 1, null
                 )
         );
         when(userService.getUserAuctions(1)).thenReturn(auctions);
         this.mockMvc.perform(get("/api/users/1/auctions")).andDo(print()).andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].owner._id").value(1))
-                .andExpect(jsonPath("$[1].owner._id").value(1));
+                .andExpect(jsonPath("$[0].owner").value(1))
+                .andExpect(jsonPath("$[1].owner").value(1));
     }
 
     @Test
@@ -121,22 +120,20 @@ class UsersControllerTest {
 
     @Test
     void getUserWonAuctionsWithValidIdShouldReturnListOfAuctions() throws Exception {
-        User owner = new User(100);
-        User user = new User(1);
         List<AuctionDTO> auctions = List.of(
                 new AuctionDTO(
                         1, "auction1", "auction", 10.0,
-                        Instant.now(), Instant.now(), owner, user
+                        Instant.now(), Instant.now(), 100, 1
                 ),
                 new AuctionDTO(
                         2, "auction2", "auction", 10.0,
-                        Instant.now(), Instant.now(), owner, user
+                        Instant.now(), Instant.now(), 100, 1
                 )
         );
         when(userService.getUserWonAuctions(1)).thenReturn(auctions);
         this.mockMvc.perform(get("/api/users/1/auctions/won")).andDo(print()).andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].winner._id").value(1))
-                .andExpect(jsonPath("$[1].winner._id").value(1));
+                .andExpect(jsonPath("$[0].winner").value(1))
+                .andExpect(jsonPath("$[1].winner").value(1));
     }
 
     @Test

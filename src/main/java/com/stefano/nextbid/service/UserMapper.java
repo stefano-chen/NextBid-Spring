@@ -18,6 +18,6 @@ public class UserMapper {
     public UserDTO mapToUserDTO(User user) {
         if (user == null)
             return null;
-        return new UserDTO(user.get_id(), user.getUsername(), user.getName(), user.getSurname(), user.getBio(), user.getCreatedAt());
+        return new UserDTO(user.getId(), user.getUsername(), user.getName(), user.getSurname(), user.getBio(), user.getCreatedAt());
     }
 }
